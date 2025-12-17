@@ -7,7 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 
     @Entity
-@Id
+    public class SupplierProfile{
+   @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
@@ -66,4 +67,5 @@ import jakarta.persistence.Column;
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+    public SupplierProfile(Long id,)
 }
