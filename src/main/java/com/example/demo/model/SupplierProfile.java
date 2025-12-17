@@ -67,5 +67,7 @@ import jakarta.persistence.Column;
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    public SupplierProfile(Long id,)
+    public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,Boolean active,LocalDateTime createdAt){
+        this.
+    }
 }
