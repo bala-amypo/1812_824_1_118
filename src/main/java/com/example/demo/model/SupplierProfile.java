@@ -6,9 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 
-@Entity
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Entity
+@Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String supplierCode;
