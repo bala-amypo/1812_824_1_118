@@ -17,7 +17,7 @@ import jakarta.persistence.Column;
     private String email;
     private String phone;
     private Boolean active;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public Long getId() {
         return id;
@@ -77,6 +77,6 @@ import jakarta.persistence.Column;
         this.createdAt=createdAt;
     }
     public SupplierProfile(){
-        
+
     }
 }
