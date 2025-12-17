@@ -61,13 +61,13 @@ import jakarta.persistence.Column;
         this.active = active;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,Boolean active,LocalDateTime createdAt){
+    public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,Boolean active,String createdAt){
         this.id=id;
         this.supplierCode=supplierCode;
         this.supplierName=supplierName;
