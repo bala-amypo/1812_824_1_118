@@ -68,6 +68,15 @@ import jakarta.persistence.Column;
         this.createdAt = createdAt;
     }
     public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,Boolean active,LocalDateTime createdAt){
-        this.
+        this.id=id;
+        this.supplierCode=supplierCode;
+        this.supplierName=supplierName;
+        this.email=email;
+        this.phone=phone;
+        this.active=active;
+        this.createdAt=createdAt;
+    }
+    public SupplierProfile(){
+        
     }
 }
