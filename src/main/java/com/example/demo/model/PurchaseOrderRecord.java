@@ -28,8 +28,19 @@ public class PurchaseOrderRecord{
         this.id=id;
     }
     public String getPoNumber(){
-        
+        return poNumber;
     }
+    public void setPonumber(String poNumber)
+    {
+        this.poNumber=poNumber;
+    }
+    public Long getSupplierId(){
+        return supplierId;
+    }
+    public void setSupplierId(Long supplierId){
+        this.supplierId=supplierId;
+    }
+    public String getItemD
 
 
 
