@@ -55,7 +55,9 @@ public class PurchaseOrderRecord{
     public String getPromisedDeliveryDate(){
         return promisedDeliveryDate;
     }
-    pu
+    public void setPromisedDeliveryDate(){
+        this.promisedDeliveryDate=promised
+    }
 
 
 
