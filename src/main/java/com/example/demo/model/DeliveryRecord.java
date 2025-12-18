@@ -32,6 +32,13 @@ public class DeliveryRecord{
         this.actualDeliveryDate=actualDeliveryDate;
     }
     public Long getDeliveredQuantity(){
-        return deliveredQuantity
+        return deliveredQuantity;
     }
+    public void setDeliveredQuantity(Long deliveredQuantity){
+        this.deliveredQuantity=deliveredQuantity;
+    }
+    public String getIssuedDate(){
+        return issuedDate;
+    }
+    public void setIssuedDate(Sting )
 }
