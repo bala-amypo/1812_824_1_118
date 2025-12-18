@@ -25,5 +25,13 @@ public class DeliveryRecord{
     public void setPold(Long pold){
         this.pold=pold;
     }
-    public 
+    public String getActualDeliveryDate(){
+        return actualDeliveryDate;
+    }
+    public void setActualDeliveryDate(String actualDeliveryDate){
+        this.actualDeliveryDate=actualDeliveryDate;
+    }
+    public Long getDeliveredQuantity(){
+        return deliveredQuantity
+    }
 }
