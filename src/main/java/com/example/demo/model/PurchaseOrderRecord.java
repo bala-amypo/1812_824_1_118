@@ -40,7 +40,13 @@ public class PurchaseOrderRecord{
     public void setSupplierId(Long supplierId){
         this.supplierId=supplierId;
     }
-    public String getItemD
+    public String getItemDescription(){
+        return itemDescription;
+    }
+    public void setItemDescription(String itemDescription)[
+        this.itemDescription=itemDescription;
+    ]
+    public Integer q
 
 
 
