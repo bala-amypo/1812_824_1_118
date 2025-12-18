@@ -55,8 +55,17 @@ public class PurchaseOrderRecord{
     public String getPromisedDeliveryDate(){
         return promisedDeliveryDate;
     }
-    public void setPromisedDeliveryDate(){
-        this.promisedDeliveryDate=promised
+    public void setPromisedDeliveryDate(String promisedDeliveryDate){
+        this.promisedDeliveryDate=promisedDeliveryDate;
+    }
+    public String getIssuedDate(){
+        return issuedDate;
+    }
+    public void setIssuedDate(String issuedDate){
+        this.issuedDate=issuedDate;
+    }
+    public PurchaseOrderRecord(Long id,String poNumber,Long itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
+        
     }
 
 
