@@ -15,7 +15,7 @@ public class PurchaseOrderRecord{
     private Long id;
     @Column(unique=true)
     private String poNumber;
-    private Long supplierld;
+    private Long supplierId;
     private String itemDescription;
     private Long quantity;
     private String promisedDeliveryDate;
@@ -43,9 +43,9 @@ public class PurchaseOrderRecord{
     public String getItemDescription(){
         return itemDescription;
     }
-    public void setItemDescription(String itemDescription)[
+    public void setItemDescription(String itemDescription){
         this.itemDescription=itemDescription;
-    ]
+    }
     public Long getQuantity(){
         return quantity;
     }
@@ -64,7 +64,7 @@ public class PurchaseOrderRecord{
     public void setIssuedDate(String issuedDate){
         this.issuedDate=issuedDate;
     }
-    public PurchaseOrderRecord(Long id,String poNumber,Long itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
+    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
         this.id=id;
         this.poNumber=poNumber;
         this.supplierId=supplierId;
