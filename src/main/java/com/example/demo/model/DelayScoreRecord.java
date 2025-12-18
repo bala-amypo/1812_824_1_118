@@ -19,6 +19,20 @@ public class DelayScoreRecord{
     public void setId(Long id){
         this.id=id;
     }
-    public Long 
+    public Long getSupplied(){
+        return supplied;
+    }
+    public void setSupplied(Long supplied){
+        this.supplied=supplied;
+    }
+    public Long getPold(){
+        return pold;
+    }
+    public void setPold(Long pold){
+        this.pold=pold;
+    }
+    public Long getDelayDays(){
+        
+    }
 
 }
