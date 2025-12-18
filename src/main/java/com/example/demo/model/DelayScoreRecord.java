@@ -60,7 +60,12 @@ public class DelayScoreRecord{
         this.supplied=supplied;
         this.pold=pold;
         this.delayDays=dleayDays;
-        this.delaySever
+        this.delaySeverity=delaySeverity;
+        this.score=score;
+        this.computedAt=computedAt;
+    }
+    public DelayScoreRecord(){
+        
     }
 
 }
