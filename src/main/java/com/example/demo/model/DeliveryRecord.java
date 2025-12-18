@@ -37,8 +37,20 @@ public class DeliveryRecord{
     public void setDeliveredQuantity(Long deliveredQuantity){
         this.deliveredQuantity=deliveredQuantity;
     }
-    public String getIssuedDate(){
+    public String getNotes(){
         return issuedDate;
     }
-    public void setIssuedDate(Sting )
+    public void setNotes(Sting notes){
+        this.notes=notes;
+    }
+    public DeliveryRecord(Long id,Long pod,String actualDeliveryDate,Long deliveredQuantity,String notes){
+        this.id=id;
+        this.pold=pold;
+        this.actualDeliveryDate=actualDeliveryDate;
+        this.deliveredQuantity=deliveredQuantity;
+        this.notes=notes;
+    }
+    public DeliveryRecord(){
+        
+    }
 }
