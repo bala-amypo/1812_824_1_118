@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import java.time.LocalDateTime;
 
 @Entity
 public class SupplierRiskAlert {
@@ -16,16 +14,13 @@ public class SupplierRiskAlert {
 
     private Long supplierId;
 
-    @Column(nullable = false)
-    private String alertLevel; // LOW / MEDIUM / HIGH
+    private String alertLevel;
 
     private String message;
 
-    private LocalDateTime alertDate;
+    private String alertDate;
 
-    private Boolean resolved = false; // default false
-
-    // Getters & Setters
+    private Boolean resolved;
     public Long getId() {
         return id;
     }
@@ -54,10 +49,10 @@ public class SupplierRiskAlert {
         this.message = message;
     }
 
-    public LocalDateTime getAlertDate() {
+    public String getAlertDate() {
         return alertDate;
     }
-    public void setAlertDate(LocalDateTime alertDate) {
+    public void setAlertDate(String alertDate) {
         this.alertDate = alertDate;
     }
 
@@ -67,14 +62,7 @@ public class SupplierRiskAlert {
     public void setResolved(Boolean resolved) {
         this.resolved = resolved;
     }
-
-    public SupplierRiskAlert(
-            Long id,
-            Long supplierId,
-            String alertLevel,
-            String message,
-            LocalDateTime alertDate,
-            Boolean resolved) {
+    public SupplierRiskAlert(Long id,Long supplierId,String alertLevel,String message,String alertDate,Boolean resolved) {
 
         this.id = id;
         this.supplierId = supplierId;
@@ -83,4 +71,7 @@ public class SupplierRiskAlert {
         this.alertDate = alertDate;
         this.resolved = resolved;
     }
+    public SupplierRiskAlert(){
+
+}
 }
