@@ -10,5 +10,20 @@ public class DeliveryRecord{
     private Long id;
     private Long pold;
     private String actualDeliveryDate;
-    private Long 
+    private Long deliveredQuantity;
+    private String notes;
+
+    public Long getId(){
+        return id;
+    }
+    public void setId(Long id){
+        this.id=id;
+    }
+    public Long getPold(){
+        return pold;
+    }
+    public void setPold(Long pold){
+        this.pold=pold;
+    }
+    public 
 }
