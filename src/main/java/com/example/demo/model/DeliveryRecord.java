@@ -41,7 +41,7 @@ public class DeliveryRecord{
         this.deliveredQuantity=deliveredQuantity;
     }
     public String getNotes(){
-        return issuedDate;
+        return notes;
     }
     public void setNotes(String notes){
         this.notes=notes;
