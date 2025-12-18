@@ -3,7 +3,10 @@ package com.example.demoo.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+
+
 @Entity
 public class PurchaseOrderRecord{
 
@@ -17,4 +20,18 @@ public class PurchaseOrderRecord{
     private Integer quantity;
     private String promisedDeliveryDate;
     private String issuedDate;
+
+    public Long getId(){
+        return id;
+    }
+    public void setId(Long id){
+        this.id=id;
+    }
+    public String getPoNumber(){
+        
+    }
+
+
+
+
 }
