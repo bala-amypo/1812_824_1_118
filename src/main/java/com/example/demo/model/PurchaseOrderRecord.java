@@ -17,7 +17,7 @@ public class PurchaseOrderRecord{
     private String poNumber;
     private Long supplierld;
     private String itemDescription;
-    private Integer quantity;
+    private Long quantity;
     private String promisedDeliveryDate;
     private String issuedDate;
 
@@ -46,7 +46,16 @@ public class PurchaseOrderRecord{
     public void setItemDescription(String itemDescription)[
         this.itemDescription=itemDescription;
     ]
-    public Integer q
+    public Long getQuantity(){
+        return quantity;
+    }
+    public void setQuantity(Long quantity){
+        this.quantity=quantity;
+    }
+    public String getPromisedDeliveryDate(){
+        return promisedDeliveryDate;
+    }
+    pu
 
 
 
