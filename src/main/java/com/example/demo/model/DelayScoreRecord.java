@@ -32,6 +32,18 @@ public class DelayScoreRecord{
         this.pold=pold;
     }
     public Long getDelayDays(){
+        return delayDays;
+    }
+    public void setDelaysDays(Long delayDays){
+        this.delayDays=delayDays;
+    }
+    public String getDelaySeverity(){
+        return delaySeverity;
+    }
+    public void setDelaySeverity(String delaySeverity){
+        this.delaySeverity=delaySeverity;
+    }
+    public Double getScore(){
         
     }
 
