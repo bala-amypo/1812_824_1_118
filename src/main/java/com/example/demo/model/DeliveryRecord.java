@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 
 @Entity
@@ -40,7 +43,7 @@ public class DeliveryRecord{
     public String getNotes(){
         return issuedDate;
     }
-    public void setNotes(Sting notes){
+    public void setNotes(String notes){
         this.notes=notes;
     }
     public DeliveryRecord(Long id,Long pod,String actualDeliveryDate,Long deliveredQuantity,String notes){
@@ -51,6 +54,6 @@ public class DeliveryRecord{
         this.notes=notes;
     }
     public DeliveryRecord(){
-        
+
     }
 }
