@@ -52,6 +52,15 @@ public class DelayScoreRecord{
     public String getComputedAt(){
         return computedAt;
     }
-    public void setComputedAt(String somputedAt)
+    public void setComputedAt(String computedAt){
+        this.computedAt=computedAt;
+    }
+    public DelayScoreRecord(Long id,Long supplied,Long pold,Long delayDays,String delaySeverity,Double score,String computedAt){
+        this.id=id;
+        this.supplied=supplied;
+        this.pold=pold;
+        this.delayDays=dleayDays;
+        this.delaySever
+    }
 
 }
