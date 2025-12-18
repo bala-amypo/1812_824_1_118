@@ -44,7 +44,14 @@ public class DelayScoreRecord{
         this.delaySeverity=delaySeverity;
     }
     public Double getScore(){
-        
+        return score;
     }
+    public void setScore(Double score){
+        this.score=score;
+    }
+    public String getComputedAt(){
+        return computedAt;
+    }
+    public void setComputedAt(String somputedAt)
 
 }
