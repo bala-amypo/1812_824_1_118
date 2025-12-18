@@ -1,7 +1,11 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
-
+@Entity
 public class DelayScoreRecord{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -59,13 +63,13 @@ public class DelayScoreRecord{
         this.id=id;
         this.supplied=supplied;
         this.pold=pold;
-        this.delayDays=dleayDays;
+        this.delayDays=delayDays;
         this.delaySeverity=delaySeverity;
         this.score=score;
         this.computedAt=computedAt;
     }
     public DelayScoreRecord(){
-        
+
     }
 
 }
