@@ -65,10 +65,15 @@ public class PurchaseOrderRecord{
         this.issuedDate=issuedDate;
     }
     public PurchaseOrderRecord(Long id,String poNumber,Long itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
-        
+        this.id=id;
+        this.poNumber=poNumber;
+        this.supplierId=supplierId;
+        this.itemDescription=itemDescription;
+        this.quantity=quantity;
+        this.promisedDeliveryDate=promisedDeliveryDate;
+        this.issuedDate=issuedDate;
     }
+    public PurchaseOrderRecord(){
 
-
-
-
+    }
 }
