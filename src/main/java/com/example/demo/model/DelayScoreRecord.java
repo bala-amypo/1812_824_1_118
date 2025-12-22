@@ -10,7 +10,7 @@ public class DelayScoreRecord{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private Long supplied;
+    private Long supplierId;
     private Long poId;
     private Long delayDays;
     private String delaySeverity;
@@ -23,11 +23,11 @@ public class DelayScoreRecord{
     public void setId(Long id){
         this.id=id;
     }
-    public Long getSupplied(){
-        return supplied;
+    public Long getSupplierId(){
+        return supplierId;
     }
-    public void setSupplied(Long supplied){
-        this.supplied=supplied;
+    public void setSupplierId(Long supplierId){
+        this.supplierId=supplierId;
     }
     public Long getPoId(){
         return poId;
@@ -59,9 +59,9 @@ public class DelayScoreRecord{
     public void setComputedAt(String computedAt){
         this.computedAt=computedAt;
     }
-    public DelayScoreRecord(Long id,Long supplied,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt){
+    public DelayScoreRecord(Long id,Long supplierId,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt){
         this.id=id;
-        this.supplied=supplied;
+        this.supplierId=supplierId;
         this.poId=poId;
         this.delayDays=delayDays;
         this.delaySeverity=delaySeverity;

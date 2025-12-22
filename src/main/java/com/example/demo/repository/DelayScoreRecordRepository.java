@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.model.DelayScoreRecord;
 
 public interface DelayScoreRecordRepository extends JpaRepository<DelayScoreRecord,Long>{
-    
+    List<DelayScoreRecord> findBySupplierId(Long supplierId)
 }
