@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @Tag(name = "Supplier Risk Alerts")
 public class SupplierRiskAlertController {
 
-    @Autowired
-    private SupplierRiskAlertService service;
+    private final SupplierRiskAlertService service;
+
+    public SupplierRiskAlertController(SupplierRiskAlertService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public SupplierRiskAlert create(@RequestBody SupplierRiskAlert alert) {
@@ -29,11 +31,6 @@ public class SupplierRiskAlertController {
     @GetMapping("/supplier/{supplierId}")
     public List<SupplierRiskAlert> getBySupplier(@PathVariable Long supplierId) {
         return service.getAlertsBySupplier(supplierId);
-    }
-
-    @GetMapping("/{id}")
-    public SupplierRiskAlert getById(@PathVariable Long id) {
-        return service.getAlertById(id);
     }
 
     @GetMapping

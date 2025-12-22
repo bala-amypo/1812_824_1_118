@@ -1,38 +1,38 @@
-// package com.example.demo.controller;
+package com.example.demo.controller;
 
-// import com.example.demo.model.DelayScore;
-// import com.example.demo.service.DelayScoreService;
-// import io.swagger.v3.oas.annotations.tags.Tag;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.web.bind.annotation.*;
+import com.example.demo.model.DelayScoreRecord;
+import com.example.demo.service.DelayScoreService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-// import java.util.List;
+import java.util.List;
 
-// @RestController
-// @RequestMapping("/api/delay-scores")
-// @Tag(name = "Delay Scores")
-// public class DelayScoreController {
+@RestController
+@RequestMapping("/api/delay-scores")
+@Tag(name = "Delay Scores")
+public class DelayScoreController {
 
-//     @Autowired
-//     private DelayScoreService service;
+    @Autowired
+    private DelayScoreService service;
 
-//     @PostMapping("/compute/{poId}")
-//     public DelayScore compute(@PathVariable Long poId) {
-//         return service.computeDelayScore(poId);
-//     }
+    @PostMapping("/compute/{poId}")
+    public DelayScoreRecord compute(@PathVariable Long poId) {
+        return service.computeDelayScore(poId);
+    }
 
-//     @GetMapping("/supplier/{supplierId}")
-//     public List<DelayScore> getBySupplier(@PathVariable Long supplierId) {
-//         return service.getScoresBySupplier(supplierId);
-//     }
+    @GetMapping("/supplier/{supplierId}")
+    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
+        return service.getScoresBySupplier(supplierId);
+    }
 
-//     @GetMapping("/{id}")
-//     public DelayScore getById(@PathVariable Long id) {
-//         return service.getScoreById(id);
-//     }
+    @GetMapping("/{id}")
+    public DelayScore getById(@PathVariable Long id) {
+        return service.getScoreById(id);
+    }
 
-//     @GetMapping
-//     public List<DelayScore> getAll() {
-//         return service.getAllScores();
-//     }
-// }
+    @GetMapping
+    public List<DelayScore> getAll() {
+        return service.getAllScores();
+    }
+}
