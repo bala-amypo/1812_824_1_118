@@ -1,3 +1,17 @@
+package com.example.demo.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.JoinColumn;
+
+import java.time.LocalDateTime;
+import java.util.Set;
+
 @Entity
 public class AppUser {
 
@@ -11,8 +25,7 @@ public class AppUser {
     private String roles;
     private String createdAt;
 
-    // Getters & Setters
-
+    
     public Long getId() {
         return id;
     }
@@ -61,15 +74,17 @@ public class AppUser {
         this.createdAt = createdAt;
     }
 
-    public AppUser() {}
+    
 
-    public AppUser(Long id, String username, String email,
-                   String password, String roles, String createdAt) {
+    public AppUser(Long id, String username, String email,String password, String roles, String createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.roles = roles;
         this.createdAt = createdAt;
+    }
+
+    public AppUser() {
     }
 }
