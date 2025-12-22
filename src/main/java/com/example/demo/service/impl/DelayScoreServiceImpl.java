@@ -10,7 +10,7 @@ import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.repository.DeliveryRecordRepository;
-import com.example.demo.repository.PurchaseOrderRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
 
@@ -18,7 +18,7 @@ import com.example.demo.service.DelayScoreService;
 public class DelayScoreServiceImpl implements DelayScoreService {
 
     @Autowired
-    private PurchaseOrderRepository poRepo;
+    private PurchaseOrderRecordRepository poRepo;
 
     @Autowired
     private DeliveryRecordRepository deliveryRepo;
@@ -27,10 +27,10 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private SupplierProfileRepository supplierRepo;
 
     @Autowired
-    private DelayScoreRepository scoreRepo;
+    private DelayScoreRecordRepository scoreRepo;
 
     @Override
-    public DelayScore computeDelayScore(Long poId) {
+    public DelayScoreRecord computeDelayScore(Long poId) {
 
         PurchaseOrderRecord po = poRepo.findById(poId)
                 .orElseThrow(() -> new RuntimeException("PO not found"));
@@ -52,7 +52,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
                 deliveries.get(0).getDeliveredDate()
         );
 
-        DelayScore score = new DelayScore();
+        DelayScoreRecord score = new DelayScoreRecord();
         score.setPoId(poId);
         score.setSupplierId(supplier.getId());
         score.setDelayDays(delayDays);
@@ -61,17 +61,17 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     }
 
     @Override
-    public List<DelayScore> getScoresBySupplier(Long supplierId) {
+    public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
         return scoreRepo.findBySupplierId(supplierId);
     }
 
     @Override
-    public DelayScore getScoreById(Long id) {
+    public DelayScoreRecord getScoreById(Long id) {
         return scoreRepo.findById(id).orElse(null);
     }
 
     @Override
-    public List<DelayScore> getAllScores() {
+    public List<DelayScoreRecord> getAllScores() {
         return scoreRepo.findAll();
     }
 }
