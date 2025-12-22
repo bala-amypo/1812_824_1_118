@@ -16,7 +16,7 @@ import jakarta.persistence.Column;
     private String supplierName;
     private String email;
     private String phone;
-    private Boolean active;
+    private boolean active;
     private String createdAt;
 
     public Long getId() {
@@ -54,10 +54,10 @@ import jakarta.persistence.Column;
         this.phone = phone;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -67,7 +67,7 @@ import jakarta.persistence.Column;
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,Boolean active,String createdAt){
+    public SupplierProfile(Long id,String supplierCode,String supplierName,String email,String phone,boolean active,String createdAt){
         this.id=id;
         this.supplierCode=supplierCode;
         this.supplierName=supplierName;

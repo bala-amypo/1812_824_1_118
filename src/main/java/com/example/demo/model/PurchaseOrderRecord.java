@@ -65,7 +65,7 @@ public class PurchaseOrderRecord{
     public void setIssuedDate(String issuedDate){
         this.issuedDate=issuedDate;
     }
-    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate,){
+    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
         this.id=id;
         this.poNumber=poNumber;
         this.supplierId=supplierId;
