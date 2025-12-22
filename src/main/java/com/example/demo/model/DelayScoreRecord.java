@@ -38,7 +38,7 @@ public class DelayScoreRecord{
     public Long getDelayDays(){
         return delayDays;
     }
-    public void setDelaysDays(Long delayDays){
+    public void setDelayDays(Long delayDays){
         this.delayDays=delayDays;
     }
     public String getDelaySeverity(){
