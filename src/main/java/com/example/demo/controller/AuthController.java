@@ -24,3 +24,4 @@ public class AuthController {
         return authService.login(user.getEmail(), user.getPassword());
     }
 }
+~
