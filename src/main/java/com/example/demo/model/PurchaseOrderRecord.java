@@ -20,7 +20,7 @@ public class PurchaseOrderRecord{
     private Long quantity;
     private String promisedDeliveryDate;
     private String issuedDate;
-    private boolean active;
+ 
 
     public Long getId(){
         return id;
@@ -65,11 +65,7 @@ public class PurchaseOrderRecord{
     public void setIssuedDate(String issuedDate){
         this.issuedDate=issuedDate;
     }
-    public boolean getActive(){
-        return active;
-    }
-    public void setActive
-    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
+    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate,){
         this.id=id;
         this.poNumber=poNumber;
         this.supplierId=supplierId;
