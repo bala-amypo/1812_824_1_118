@@ -70,7 +70,14 @@ public class PurchaseOrderRecord{
     public void setIssuedDate(String issuedDate){
         this.issuedDate=issuedDate;
     }
-    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate){
+    public LocalDate getExpectedDate() {
+        return expectedDate;
+    }
+    public void setExpectedDate(LocalDate expectedDate) {
+        this.expectedDate = expectedDate;
+    }
+
+    public PurchaseOrderRecord(Long id,String poNumber,String itemDescription,Long quantity,String promisedDeliveryDate,String issuedDate,LocalDate expectedDate){
         this.id=id;
         this.poNumber=poNumber;
         this.supplierId=supplierId;
@@ -78,6 +85,7 @@ public class PurchaseOrderRecord{
         this.quantity=quantity;
         this.promisedDeliveryDate=promisedDeliveryDate;
         this.issuedDate=issuedDate;
+        this.expectedDate = expectedDate;
     }
     public PurchaseOrderRecord(){
 

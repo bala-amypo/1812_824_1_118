@@ -49,7 +49,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
 
         long delayDays = ChronoUnit.DAYS.between(
                 po.getExpectedDate(),
-                deliveries.get(0).getDeliveredDate()
+                deliveries.get(0).getActualDelivereDate()
         );
 
         DelayScoreRecord score = new DelayScoreRecord();
