@@ -52,10 +52,10 @@ public class DelayScoreServiceImpl implements DelayScoreService {
                 deliveries.get(0).getDeliveredDate()
         );
 
-        DelayScoreRecord score = new DelayScoreRecord();
-        score.setPoId(poId);
-        score.setSupplierId(supplier.getId());
-        score.setDelayDays(delayDays);
+        // DelayScoreRecord score = new DelayScoreRecord();
+        // score.setPoId(poId);
+        // score.setSupplierId(supplier.getId());
+        // score.setDelayDays(delayDays);
 
         return scoreRepo.save(score);
     }
