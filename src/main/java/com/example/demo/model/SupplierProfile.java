@@ -54,7 +54,7 @@ import jakarta.persistence.Column;
         this.phone = phone;
     }
 
-    public boolean getActive() {
+    public boolean isActive() {
         return active;
     }
     public void setActive(boolean active) {
