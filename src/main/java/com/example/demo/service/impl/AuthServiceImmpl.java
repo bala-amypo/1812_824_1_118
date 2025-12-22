@@ -3,14 +3,14 @@ package com.example.demo.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.model.AppUser;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.AppUserRepository;
 import com.example.demo.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private UserRepository repo;
+    private AppUserRepository repo;
 
     @Override
     public AppUser registerUser(AppUser user) {
