@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import java.time.LocalDate;
+
 
 
 @Entity
@@ -12,7 +14,7 @@ public class DeliveryRecord{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private Long poId;
-    private String actualDeliveryDate;
+    private LocalDate actualDeliveryDate;
     private Long deliveredQuantity;
     private String notes;
 
@@ -28,10 +30,10 @@ public class DeliveryRecord{
     public void setPold(Long poId){
         this.poId=poId;
     }
-    public String getActualDeliveryDate(){
+    public LocalDate getActualDeliveryDate(){
         return actualDeliveryDate;
     }
-    public void setActualDeliveryDate(String actualDeliveryDate){
+    public void setActualDeliveryDate(LocalDate actualDeliveryDate){
         this.actualDeliveryDate=actualDeliveryDate;
     }
     public Long getDeliveredQuantity(){
@@ -46,7 +48,7 @@ public class DeliveryRecord{
     public void setNotes(String notes){
         this.notes=notes;
     }
-    public DeliveryRecord(Long id,Long poId,String actualDeliveryDate,Long deliveredQuantity,String notes){
+    public DeliveryRecord(Long id,Long poId,LocalDate actualDeliveryDate,Long deliveredQuantity,String notes){
         this.id=id;
         this.poId=poId;
         this.actualDeliveryDate=actualDeliveryDate;
