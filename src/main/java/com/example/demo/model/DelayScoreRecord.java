@@ -20,7 +20,7 @@ public class DelayScoreRecord{
     private Double score;
     private String computedAt;
     @Column(name = "expected_date")
-    private LocalDate expectedDate;
+    private String expectedDate;
 
     public Long getID(){
         return id;
@@ -64,14 +64,14 @@ public class DelayScoreRecord{
     public void setComputedAt(String computedAt){
         this.computedAt=computedAt;
     }
-    public LocalDate getExpectedDate() {
+    public String getExpectedDate() {
         return expectedDate;
     }
-    public void setExpectedDate(LocalDate expectedDate) {
+    public void setExpectedDate(String expectedDate) {
         this.expectedDate = expectedDate;
     }
 
-    public DelayScoreRecord(Long id,Long supplierId,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt,LocalDate expectedDate){
+    public DelayScoreRecord(Long id,Long supplierId,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt,String expectedDate){
         this.id=id;
         this.supplierId=supplierId;
         this.poId=poId;
