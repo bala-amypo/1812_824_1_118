@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import java.time.LocalDate;
 
 
 @Entity
@@ -18,7 +17,6 @@ public class DelayScoreRecord{
     private String delaySeverity;
     private Double score;
     private String computedAt;
-    private String expectedDate;
 
     public Long getID(){
         return id;
@@ -62,14 +60,7 @@ public class DelayScoreRecord{
     public void setComputedAt(String computedAt){
         this.computedAt=computedAt;
     }
-    public String getExpectedDate() {
-        return expectedDate;
-    }
-    public void setExpectedDate(String expectedDate) {
-        this.expectedDate = expectedDate;
-    }
-
-    public DelayScoreRecord(Long id,Long supplierId,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt,String expectedDate){
+    public DelayScoreRecord(Long id,Long supplierId,Long poId,Long delayDays,String delaySeverity,Double score,String computedAt){
         this.id=id;
         this.supplierId=supplierId;
         this.poId=poId;
@@ -77,7 +68,6 @@ public class DelayScoreRecord{
         this.delaySeverity=delaySeverity;
         this.score=score;
         this.computedAt=computedAt;
-        this.expectedDate=expectedDate;
     }
     public DelayScoreRecord(){
 

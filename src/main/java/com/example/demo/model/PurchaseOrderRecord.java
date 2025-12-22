@@ -5,6 +5,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
+import java.time.LocalDate;
+
 
 
 @Entity
@@ -20,6 +22,9 @@ public class PurchaseOrderRecord{
     private Long quantity;
     private String promisedDeliveryDate;
     private String issuedDate;
+    @Column(name = "expected_date")
+    private LocalDate expectedDate;
+
  
 
     public Long getId(){
