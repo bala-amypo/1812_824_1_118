@@ -5,7 +5,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDate;
-import jakarta.persistence.Column;
 
 
 @Entity
@@ -19,7 +18,6 @@ public class DelayScoreRecord{
     private String delaySeverity;
     private Double score;
     private String computedAt;
-    @Column(name = "expected_date")
     private String expectedDate;
 
     public Long getID(){
