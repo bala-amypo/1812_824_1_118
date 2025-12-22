@@ -18,7 +18,7 @@ public class PurchaseOrderController {
 
     @PostMapping
     public PurchaseOrderRecord create(@RequestBody PurchaseOrderRecord po) {
-        return service.createPO(po);
+        return service.createPurchaseOrder(po);
     }
 
     @GetMapping("/supplier/{supplierId}")
@@ -33,6 +33,6 @@ public class PurchaseOrderController {
 
     @GetMapping
     public List<PurchaseOrderRecord> getAll() {
-        return service.getAllPOs();
+        return service.getAllPurchaseOrders();
     }
 }
