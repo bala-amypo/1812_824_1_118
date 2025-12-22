@@ -11,7 +11,7 @@ public class DeliveryRecord{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private Long pold;
+    private Long poId;
     private String actualDeliveryDate;
     private Long deliveredQuantity;
     private String notes;
@@ -22,11 +22,11 @@ public class DeliveryRecord{
     public void setId(Long id){
         this.id=id;
     }
-    public Long getPold(){
-        return pold;
+    public Long getPoId(){
+        return poId;
     }
-    public void setPold(Long pold){
-        this.pold=pold;
+    public void setPold(Long poId){
+        this.poId=poId;
     }
     public String getActualDeliveryDate(){
         return actualDeliveryDate;
@@ -46,9 +46,9 @@ public class DeliveryRecord{
     public void setNotes(String notes){
         this.notes=notes;
     }
-    public DeliveryRecord(Long id,Long pod,String actualDeliveryDate,Long deliveredQuantity,String notes){
+    public DeliveryRecord(Long id,Long poId,String actualDeliveryDate,Long deliveredQuantity,String notes){
         this.id=id;
-        this.pold=pold;
+        this.poId=poId;
         this.actualDeliveryDate=actualDeliveryDate;
         this.deliveredQuantity=deliveredQuantity;
         this.notes=notes;
