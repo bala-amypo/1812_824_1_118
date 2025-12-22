@@ -27,12 +27,12 @@ public class DelayScoreController {
     }
 
     @GetMapping("/{id}")
-    public DelayScore getById(@PathVariable Long id) {
+    public DelayScoreRecord getById(@PathVariable Long id) {
         return service.getScoreById(id);
     }
 
     @GetMapping
-    public List<DelayScore> getAll() {
+    public List<DelayScoreRecord> getAll() {
         return service.getAllScores();
     }
 }
