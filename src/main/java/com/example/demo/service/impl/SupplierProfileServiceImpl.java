@@ -5,7 +5,6 @@ import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +25,13 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     @Override
     public SupplierProfile getSupplierById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Supplier not found"));
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return repository.findBySupplierCode(code);
+    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode);
     }
 
     @Override
