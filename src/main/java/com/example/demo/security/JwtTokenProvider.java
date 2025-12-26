@@ -9,13 +9,17 @@ public class JwtTokenProvider {
     private final String secret;
     private final long validityInMs;
 
-    // REQUIRED by tests
+    // REQUIRED BY TESTS
     public JwtTokenProvider(String secret, long validityInMs) {
         this.secret = secret;
         this.validityInMs = validityInMs;
     }
 
-    // Used by tests (mocked)
+    // DEFAULT CONSTRUCTOR FOR SPRING
+    public JwtTokenProvider() {
+        this("default-secret", 86400000);
+    }
+
     public String generateToken(AppUser user) {
         return "TOKEN_" + user.getUsername();
     }

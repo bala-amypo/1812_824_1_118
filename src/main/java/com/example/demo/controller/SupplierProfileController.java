@@ -2,8 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
@@ -27,7 +33,7 @@ public class SupplierProfileController {
     }
 
     @GetMapping
-    public List<SupplierProfile> getAllSuppliers() {
+    public List<SupplierProfile> getAll() {
         return service.getAllSuppliers();
     }
 
@@ -39,8 +45,8 @@ public class SupplierProfileController {
         return service.updateSupplierStatus(id, active);
     }
 
-    @GetMapping("/lookup/{supplierCode}")
-    public SupplierProfile lookupByCode(@PathVariable String supplierCode) {
-        return service.getBySupplierCode(supplierCode).orElse(null);
+    @GetMapping("/lookup/{code}")
+    public SupplierProfile lookup(@PathVariable String code) {
+        return service.getBySupplierCode(code).orElse(null);
     }
 }

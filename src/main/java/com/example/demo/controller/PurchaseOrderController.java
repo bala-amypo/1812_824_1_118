@@ -2,8 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
@@ -17,12 +21,14 @@ public class PurchaseOrderController {
     }
 
     @PostMapping
-    public PurchaseOrderRecord createPO(@RequestBody PurchaseOrderRecord po) {
+    public PurchaseOrderRecord create(@RequestBody PurchaseOrderRecord po) {
         return service.createPurchaseOrder(po);
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public List<PurchaseOrderRecord> getBySupplier(@PathVariable Long supplierId) {
+    public List<PurchaseOrderRecord> getBySupplier(
+            @PathVariable Long supplierId
+    ) {
         return service.getPOsBySupplier(supplierId);
     }
 
