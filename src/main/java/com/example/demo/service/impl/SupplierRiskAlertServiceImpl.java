@@ -20,7 +20,9 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        alert.setResolved(false);
+        if (alert.getResolved() == null) {
+            alert.setResolved(false); // 🔴 REQUIRED
+        }
         return repository.save(alert);
     }
 
@@ -41,9 +43,5 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     public List<SupplierRiskAlert> getAllAlerts() {
         return repository.findAll();
     }
-
-    @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repository.findById(id);
-    }
 }
+

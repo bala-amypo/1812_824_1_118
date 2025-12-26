@@ -31,8 +31,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             PurchaseOrderRecordRepository poRepo,
             DeliveryRecordRepository deliveryRepo,
             SupplierProfileRepository supplierRepo,
-            SupplierRiskAlertService alertService
-    ) {
+            SupplierRiskAlertService alertService) {
         this.scoreRepo = scoreRepo;
         this.poRepo = poRepo;
         this.deliveryRepo = deliveryRepo;
@@ -42,14 +41,13 @@ public class DelayScoreServiceImpl implements DelayScoreService {
 
     @Override
     public DelayScoreRecord computeDelayScore(Long poId) {
-
         PurchaseOrderRecord po = poRepo.findById(poId)
-                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
+                .orElseThrow(() -> new BadRequestException("Invalid PO"));
 
         SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Supplier not found"));
 
-        if (!supplier.getActive()) {
+        if (!Boolean.TRUE.equals(supplier.getActive())) {
             throw new BadRequestException("Inactive supplier");
         }
 
@@ -58,30 +56,37 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             throw new BadRequestException("No deliveries");
         }
 
-        DeliveryRecord delivery = deliveries.get(0);
-
-        long delayDays = ChronoUnit.DAYS.between(
-                po.getPromisedDeliveryDate(),
-                delivery.getActualDeliveryDate()
-        );
+        LocalDate actual = deliveries.get(0).getActualDeliveryDate();
+        long delayDays = Math.max(0,
+                ChronoUnit.DAYS.between(po.getPromisedDeliveryDate(), actual));
 
         DelayScoreRecord score = new DelayScoreRecord();
         score.setPoId(poId);
         score.setSupplierId(po.getSupplierId());
-        score.setDelayDays((int) Math.max(0, delayDays));
+        score.setDelayDays((int) delayDays);
 
-        if (delayDays <= 0) {
+        if (delayDays == 0) {
             score.setDelaySeverity("ON_TIME");
             score.setScore(100.0);
         } else if (delayDays <= 3) {
             score.setDelaySeverity("MINOR");
-            score.setScore(80.0);
+            score.setScore(90.0);
         } else {
             score.setDelaySeverity("SEVERE");
-            score.setScore(40.0);
+            score.setScore(60.0);
+
+            SupplierRiskAlert alert = new SupplierRiskAlert();
+            alert.setSupplierId(po.getSupplierId());
+            alert.setAlertLevel("HIGH");
+            alertService.createAlert(alert);
         }
 
         return scoreRepo.save(score);
+    }
+
+    @Override
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+        return scoreRepo.findById(id);
     }
 
     @Override
@@ -92,10 +97,5 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     @Override
     public List<DelayScoreRecord> getAllScores() {
         return scoreRepo.findAll();
-    }
-
-    @Override
-    public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return scoreRepo.findById(id);
     }
 }
