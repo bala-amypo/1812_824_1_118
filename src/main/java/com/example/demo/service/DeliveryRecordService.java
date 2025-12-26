@@ -10,7 +10,7 @@ public interface DeliveryRecordService {
 
     List<DeliveryRecord> getDeliveriesByPO(Long poId);
 
-    List<DeliveryRecord> getAllDeliveries();
-
     Optional<DeliveryRecord> getDeliveryById(Long id);
+
+    List<DeliveryRecord> getAllDeliveries();
 }

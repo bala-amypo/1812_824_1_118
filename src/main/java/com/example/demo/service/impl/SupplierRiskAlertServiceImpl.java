@@ -50,6 +50,11 @@ public class SupplierRiskAlertServiceImpl
     }
 
     @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
         return repository.findBySupplierId(supplierId);
     }
@@ -57,10 +62,5 @@ public class SupplierRiskAlertServiceImpl
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return repository.findAll();
-    }
-
-    @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repository.findById(id);
     }
 }

@@ -10,7 +10,7 @@ public interface DelayScoreService {
 
     List<DelayScoreRecord> getScoresBySupplier(Long supplierId);
 
-    List<DelayScoreRecord> getAllScores();
-
     Optional<DelayScoreRecord> getScoreById(Long id);
+
+    List<DelayScoreRecord> getAllScores();
 }

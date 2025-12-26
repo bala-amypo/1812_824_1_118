@@ -16,9 +16,9 @@ public interface SupplierRiskAlertService {
 
     SupplierRiskAlert resolveAlert(Long id);
 
+    Optional<SupplierRiskAlert> getAlertById(Long id);
+
     List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
 
     List<SupplierRiskAlert> getAllAlerts();
-
-    Optional<SupplierRiskAlert> getAlertById(Long id);
 }

@@ -27,7 +27,7 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
 
         if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >= 0");
+            throw new BadRequestException("Delivered quantity must be >=");
         }
 
         poRepository.findById(delivery.getPoId())
@@ -43,12 +43,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepository.findAll();
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepository.findById(id);
     }
 
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepository.findById(id);
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveryRepository.findAll();
     }
 }
