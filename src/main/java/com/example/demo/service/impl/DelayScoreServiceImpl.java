@@ -20,19 +20,20 @@ import java.util.Optional;
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final DelayScoreRecordRepository delayRepo;
+    private final DelayScoreRecordRepository scoreRepo;
     private final PurchaseOrderRecordRepository poRepo;
     private final DeliveryRecordRepository deliveryRepo;
     private final SupplierProfileRepository supplierRepo;
     private final SupplierRiskAlertService alertService;
 
     public DelayScoreServiceImpl(
-            DelayScoreRecordRepository delayRepo,
+            DelayScoreRecordRepository scoreRepo,
             PurchaseOrderRecordRepository poRepo,
             DeliveryRecordRepository deliveryRepo,
             SupplierProfileRepository supplierRepo,
-            SupplierRiskAlertService alertService) {
-        this.delayRepo = delayRepo;
+            SupplierRiskAlertService alertService
+    ) {
+        this.scoreRepo = scoreRepo;
         this.poRepo = poRepo;
         this.deliveryRepo = deliveryRepo;
         this.supplierRepo = supplierRepo;
@@ -41,6 +42,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
 
     @Override
     public DelayScoreRecord computeDelayScore(Long poId) {
+
         PurchaseOrderRecord po = poRepo.findById(poId)
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
@@ -56,22 +58,19 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             throw new BadRequestException("No deliveries");
         }
 
-        DeliveryRecord last = deliveries.get(deliveries.size() - 1);
+        DeliveryRecord delivery = deliveries.get(0);
+
         long delayDays = ChronoUnit.DAYS.between(
                 po.getPromisedDeliveryDate(),
-                last.getActualDeliveryDate()
+                delivery.getActualDeliveryDate()
         );
 
-        if (delayDays < 0) delayDays = 0;
-
-        DelayScoreRecord score = delayRepo.findByPoId(poId)
-                .orElse(new DelayScoreRecord());
-
+        DelayScoreRecord score = new DelayScoreRecord();
         score.setPoId(poId);
         score.setSupplierId(po.getSupplierId());
-        score.setDelayDays((int) delayDays);
+        score.setDelayDays((int) Math.max(0, delayDays));
 
-        if (delayDays == 0) {
+        if (delayDays <= 0) {
             score.setDelaySeverity("ON_TIME");
             score.setScore(100.0);
         } else if (delayDays <= 3) {
@@ -79,24 +78,24 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             score.setScore(80.0);
         } else {
             score.setDelaySeverity("SEVERE");
-            score.setScore(50.0);
+            score.setScore(40.0);
         }
 
-        return delayRepo.save(score);
+        return scoreRepo.save(score);
     }
 
     @Override
     public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
-        return delayRepo.findBySupplierId(supplierId);
+        return scoreRepo.findBySupplierId(supplierId);
     }
 
     @Override
     public List<DelayScoreRecord> getAllScores() {
-        return delayRepo.findAll();
+        return scoreRepo.findAll();
     }
 
     @Override
     public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return delayRepo.findById(id);
+        return scoreRepo.findById(id);
     }
 }

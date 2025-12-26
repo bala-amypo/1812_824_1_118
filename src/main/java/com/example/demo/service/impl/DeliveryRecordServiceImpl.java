@@ -13,40 +13,42 @@ import java.util.Optional;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository deliveryRepo;
+    private final DeliveryRecordRepository repo;
     private final PurchaseOrderRecordRepository poRepo;
 
     public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository deliveryRepo,
-            PurchaseOrderRecordRepository poRepo) {
-        this.deliveryRepo = deliveryRepo;
+            DeliveryRecordRepository repo,
+            PurchaseOrderRecordRepository poRepo
+    ) {
+        this.repo = repo;
         this.poRepo = poRepo;
     }
 
     @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-        if (delivery.getDeliveredQuantity() < 0) {
+    public DeliveryRecord recordDelivery(DeliveryRecord record) {
+
+        if (record.getDeliveredQuantity() < 0) {
             throw new BadRequestException("Delivered quantity must be >= 0");
         }
 
-        poRepo.findById(delivery.getPoId())
+        poRepo.findById(record.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-        return deliveryRepo.save(delivery);
+        return repo.save(record);
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return deliveryRepo.findByPoId(poId);
+        return repo.findByPoId(poId);
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepo.findAll();
+        return repo.findAll();
     }
 
     @Override
     public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepo.findById(id);
+        return repo.findById(id);
     }
 }
