@@ -2,8 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.service.DelayScoreService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
@@ -22,13 +25,10 @@ public class DelayScoreController {
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
+    public List<DelayScoreRecord> bySupplier(
+            @PathVariable Long supplierId
+    ) {
         return service.getScoresBySupplier(supplierId);
-    }
-
-    @GetMapping("/{id}")
-    public DelayScoreRecord getById(@PathVariable Long id) {
-        return service.getScoreById(id).orElse(null);
     }
 
     @GetMapping

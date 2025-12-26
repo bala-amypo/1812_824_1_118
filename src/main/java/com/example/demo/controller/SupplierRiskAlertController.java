@@ -2,8 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
@@ -27,13 +32,10 @@ public class SupplierRiskAlertController {
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public List<SupplierRiskAlert> getBySupplier(@PathVariable Long supplierId) {
+    public List<SupplierRiskAlert> bySupplier(
+            @PathVariable Long supplierId
+    ) {
         return service.getAlertsBySupplier(supplierId);
-    }
-
-    @GetMapping("/{id}")
-    public SupplierRiskAlert getById(@PathVariable Long id) {
-        return service.getAlertById(id).orElse(null);
     }
 
     @GetMapping
