@@ -13,7 +13,7 @@ public interface SupplierRiskAlertService {
 
     List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
 
-    List<SupplierRiskAlert> getAllAlerts();
-
     Optional<SupplierRiskAlert> getAlertById(Long id);
+
+    List<SupplierRiskAlert> getAllAlerts();
 }

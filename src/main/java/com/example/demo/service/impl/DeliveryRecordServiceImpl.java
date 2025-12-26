@@ -1,3 +1,15 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.DeliveryRecord;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.service.DeliveryRecordService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
@@ -19,10 +31,10 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
         if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Quantity must be non-negative");
+            throw new BadRequestException("Delivered quantity must be >=");
         }
 
-        return deliveryRepo.save(delivery); // SAVE REQUIRED
+        return deliveryRepo.save(delivery);
     }
 
     @Override

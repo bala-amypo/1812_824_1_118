@@ -1,3 +1,14 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.SupplierRiskAlert;
+import com.example.demo.repository.SupplierRiskAlertRepository;
+import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
@@ -9,11 +20,9 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-
         if (alert.getResolved() == null) {
-            alert.setResolved(false); // DEFAULT REQUIRED
+            alert.setResolved(false);
         }
-
         return repo.save(alert);
     }
 

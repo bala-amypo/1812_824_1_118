@@ -1,3 +1,14 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.SupplierProfileService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
@@ -9,12 +20,10 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
-
         if (supplier.getActive() == null) {
-            supplier.setActive(true); // DEFAULT REQUIRED
+            supplier.setActive(true);
         }
-
-        return repository.save(supplier); // MUST RETURN SAVED
+        return repository.save(supplier);
     }
 
     @Override
@@ -24,8 +33,8 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return repository.findBySupplierCode(code);
+    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode);
     }
 
     @Override
@@ -35,8 +44,8 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile s = getSupplierById(id);
-        s.setActive(active);
-        return repository.save(s);
+        SupplierProfile supplier = getSupplierById(id);
+        supplier.setActive(active);
+        return repository.save(supplier);
     }
 }
