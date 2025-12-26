@@ -7,7 +7,9 @@ import com.example.demo.service.SupplierProfileService;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     private final SupplierProfileRepository supplierProfileRepository;
