@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
@@ -10,45 +9,47 @@ import com.example.demo.service.DeliveryRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository deliveryRepo;
-    private final PurchaseOrderRecordRepository poRepo;
+    private final DeliveryRecordRepository deliveryRepository;
+    private final PurchaseOrderRecordRepository poRepository;
 
     public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository deliveryRepo,
-            PurchaseOrderRecordRepository poRepo) {
-        this.deliveryRepo = deliveryRepo;
-        this.poRepo = poRepo;
+            DeliveryRecordRepository deliveryRepository,
+            PurchaseOrderRecordRepository poRepository) {
+
+        this.deliveryRepository = deliveryRepository;
+        this.poRepository = poRepository;
     }
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-        PurchaseOrderRecord po = poRepo.findById(delivery.getPoId())
+
+        PurchaseOrderRecord po = poRepository.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
         if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >= 0");
+            throw new BadRequestException("Delivered quantity must be >=");
         }
 
-        return deliveryRepo.save(delivery);
+        return deliveryRepository.save(delivery);
     }
 
     @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        return deliveryRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepository.findById(id);
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return deliveryRepo.findByPoId(poId);
+        return deliveryRepository.findByPoId(poId);
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepo.findAll();
+        return deliveryRepository.findAll();
     }
 }
