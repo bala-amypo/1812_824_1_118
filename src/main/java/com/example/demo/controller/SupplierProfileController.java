@@ -1,16 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/suppliers")
@@ -23,30 +16,21 @@ public class SupplierProfileController {
     }
 
     @PostMapping
-    public SupplierProfile createSupplier(@RequestBody SupplierProfile supplier) {
+    public SupplierProfile create(@RequestBody SupplierProfile supplier) {
         return service.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")
-    public SupplierProfile getSupplier(@PathVariable Long id) {
-        return service.getSupplierById(id);
+    public SupplierProfile getById(@PathVariable Long id) {
+        return service.getSupplierById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
 
-    @GetMapping
-    public List<SupplierProfile> getAll() {
-        return service.getAllSuppliers();
-    }
-
-    @PutMapping("/{id}/status")
+    @PatchMapping("/{id}/status")
     public SupplierProfile updateStatus(
             @PathVariable Long id,
-            @RequestParam boolean active
-    ) {
-        return service.updateSupplierStatus(id, active);
-    }
+            @RequestParam boolean active) {
 
-    @GetMapping("/lookup/{code}")
-    public SupplierProfile lookup(@PathVariable String code) {
-        return service.getBySupplierCode(code).orElse(null);
+        return service.updateSupplierStatus(id, active);
     }
 }
