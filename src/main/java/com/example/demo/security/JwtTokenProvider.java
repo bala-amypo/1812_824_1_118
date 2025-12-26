@@ -1,17 +1,22 @@
 package com.example.demo.security;
 
 import com.example.demo.model.AppUser;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:default-secret}")
-    private String jwtSecret;
+    private final String secret;
+    private final long validityInMs;
 
+    // REQUIRED by tests
+    public JwtTokenProvider(String secret, long validityInMs) {
+        this.secret = secret;
+        this.validityInMs = validityInMs;
+    }
+
+    // Used by tests (mocked)
     public String generateToken(AppUser user) {
-        // simplified token for tests
         return "TOKEN_" + user.getUsername();
     }
 

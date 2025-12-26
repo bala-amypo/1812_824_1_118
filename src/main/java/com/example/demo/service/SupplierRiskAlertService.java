@@ -8,11 +8,17 @@ public interface SupplierRiskAlertService {
 
     SupplierRiskAlert createAlert(SupplierRiskAlert alert);
 
+    SupplierRiskAlert createAlertForSupplier(
+            Long supplierId,
+            String level,
+            String message
+    );
+
     SupplierRiskAlert resolveAlert(Long id);
+
+    Optional<SupplierRiskAlert> getAlertById(Long id);
 
     List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
 
     List<SupplierRiskAlert> getAllAlerts();
-
-    Optional<SupplierRiskAlert> getAlertById(Long id);
 }

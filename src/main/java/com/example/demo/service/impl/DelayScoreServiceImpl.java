@@ -1,107 +1,55 @@
-package com.example.demo.service.impl;
+@Override
+public DelayScoreRecord computeDelayScore(Long poId) {
 
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
-import com.example.demo.service.DelayScoreService;
-import com.example.demo.service.SupplierRiskAlertService;
-import org.springframework.stereotype.Service;
+    PurchaseOrderRecord po = poRepo.findById(poId)
+            .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
+    SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
+            .orElseThrow(() -> new BadRequestException("Supplier not found"));
 
-@Service
-public class DelayScoreServiceImpl implements DelayScoreService {
-
-    private final DelayScoreRecordRepository delayRepo;
-    private final PurchaseOrderRecordRepository poRepo;
-    private final DeliveryRecordRepository deliveryRepo;
-    private final SupplierProfileRepository supplierRepo;
-    private final SupplierRiskAlertService alertService;
-
-    public DelayScoreServiceImpl(
-            DelayScoreRecordRepository delayRepo,
-            PurchaseOrderRecordRepository poRepo,
-            DeliveryRecordRepository deliveryRepo,
-            SupplierProfileRepository supplierRepo,
-            SupplierRiskAlertService alertService
-    ) {
-        this.delayRepo = delayRepo;
-        this.poRepo = poRepo;
-        this.deliveryRepo = deliveryRepo;
-        this.supplierRepo = supplierRepo;
-        this.alertService = alertService;
+    if (!supplier.getActive()) {
+        throw new BadRequestException("Inactive supplier");
     }
 
-    @Override
-    public DelayScoreRecord computeDelayScore(Long poId) {
-
-        PurchaseOrderRecord po = poRepo.findById(poId)
-                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
-
-        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
-                .orElseThrow(() -> new BadRequestException("Supplier not found"));
-
-        if (!supplier.getActive()) {
-            throw new BadRequestException("Inactive supplier");
-        }
-
-        List<DeliveryRecord> deliveries = deliveryRepo.findByPoId(poId);
-        if (deliveries.isEmpty()) {
-            throw new BadRequestException("No deliveries");
-        }
-
-        LocalDate promised = po.getPromisedDeliveryDate();
-        LocalDate actual = deliveries.get(0).getActualDeliveryDate();
-
-        long delayDays = Math.max(0, ChronoUnit.DAYS.between(promised, actual));
-
-        String severity;
-        double score;
-
-        if (delayDays == 0) {
-            severity = "ON_TIME";
-            score = 100.0;
-        } else if (delayDays <= 3) {
-            severity = "MINOR";
-            score = 90.0;
-        } else if (delayDays <= 7) {
-            severity = "MAJOR";
-            score = 70.0;
-        } else {
-            severity = "SEVERE";
-            score = 40.0;
-            alertService.createAlertForSupplier(
-                    supplier.getId(),
-                    "HIGH",
-                    "Severe delivery delay"
-            );
-        }
-
-        DelayScoreRecord record = new DelayScoreRecord();
-        record.setPoId(poId);
-        record.setSupplierId(supplier.getId());
-        record.setDelayDays((int) delayDays);
-        record.setDelaySeverity(severity);
-        record.setScore(score);
-
-        return delayRepo.save(record);
+    List<DeliveryRecord> deliveries = deliveryRepo.findByPoId(poId);
+    if (deliveries.isEmpty()) {
+        throw new BadRequestException("No deliveries");
     }
 
-    @Override
-    public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return delayRepo.findById(id);
+    LocalDate promised = po.getPromisedDeliveryDate();
+    LocalDate actual = deliveries.get(0).getActualDeliveryDate();
+
+    long delayDays = Math.max(0,
+            ChronoUnit.DAYS.between(promised, actual));
+
+    String severity;
+    double score;
+
+    if (delayDays == 0) {
+        severity = "ON_TIME";
+        score = 100.0;
+    } else if (delayDays <= 3) {
+        severity = "MINOR";
+        score = 90.0;
+    } else if (delayDays <= 7) {
+        severity = "MODERATE";
+        score = 70.0;
+    } else {
+        severity = "SEVERE";
+        score = 40.0;
+        alertService.createAlertForSupplier(
+                supplier.getId(),
+                "HIGH",
+                "Severe delivery delay"
+        );
     }
 
-    @Override
-    public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
-        return delayRepo.findBySupplierId(supplierId);
-    }
+    DelayScoreRecord record = new DelayScoreRecord();
+    record.setPoId(poId);
+    record.setSupplierId(supplier.getId());
+    record.setDelayDays((int) delayDays);
+    record.setDelaySeverity(severity);
+    record.setScore(score);
 
-    @Override
-    public List<DelayScoreRecord> getAllScores() {
-        return delayRepo.findAll();
-    }
+    return delayRepo.save(record);
 }
