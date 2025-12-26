@@ -2,19 +2,24 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/suppliers")
-@Tag(name = "Supplier Profile")
 public class SupplierProfileController {
 
-    @Autowired
-    private SupplierProfileService service;
+    private final SupplierProfileService service;
+
+    public SupplierProfileController(SupplierProfileService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public SupplierProfile create(@RequestBody SupplierProfile supplier) {
@@ -30,21 +35,4 @@ public class SupplierProfileController {
     public List<SupplierProfile> getAll() {
         return service.getAllSuppliers();
     }
-
-    @PutMapping("/{id}/status")
-    public SupplierProfile updateStatus(@PathVariable Long id,
-                                        @RequestParam boolean active) {
-        return service.updateSupplierStatus(id, active);
-    }
-
-    @GetMapping("/lookup/{supplierCode}")
-    public SupplierProfile lookup(@PathVariable String supplierCode) {
-        return service.getBySupplierCode(supplierCode);
-    }
-
-    @GetMapping("/{id}")
-public SupplierProfile getById(@PathVariable Long id) {
-    return service.getSupplierById(id);
-}
-
 }

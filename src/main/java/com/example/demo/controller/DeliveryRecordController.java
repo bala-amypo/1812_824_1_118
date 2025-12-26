@@ -2,44 +2,43 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/deliveries")
-@Tag(name = "Deliveries")
 public class DeliveryRecordController {
 
-    @Autowired
-    private DeliveryRecordService service;
+    private final DeliveryRecordService service;
 
-    @PostMapping
-    public DeliveryRecord record(@RequestBody DeliveryRecord delivery) {
-        return service.recordDelivery(delivery);
+    public DeliveryRecordController(DeliveryRecordService service) {
+        this.service = service;
     }
 
-    @GetMapping("/po/{poId}")
-    public List<DeliveryRecord> getByPO(@PathVariable Long poId) {
-        return service.getDeliveriesByPO(poId);
+    @PostMapping
+    public DeliveryRecord create(@RequestBody DeliveryRecord delivery) {
+        return service.recordDelivery(delivery);
     }
 
     @GetMapping("/{id}")
     public DeliveryRecord getById(@PathVariable Long id) {
-        return service.getDeliveryById(id);
+        return service.getDeliveryById(id)
+                .orElseThrow(() -> new RuntimeException("Delivery not found"));
+    }
+
+    @GetMapping("/po/{poId}")
+    public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
+        return service.getDeliveriesByPO(poId);
     }
 
     @GetMapping
     public List<DeliveryRecord> getAll() {
         return service.getAllDeliveries();
     }
-
-    @GetMapping("/{id}")
-public DeliveryRecord getById(@PathVariable Long id) {
-    return service.getDeliveryById(id)
-            .orElseThrow(() -> new RuntimeException("Delivery not found"));
-}
-
 }
