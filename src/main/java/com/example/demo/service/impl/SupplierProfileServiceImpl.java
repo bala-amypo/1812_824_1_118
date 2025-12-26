@@ -27,8 +27,10 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierId(Long id) {
-        return getSupplierById(id);
+    public Optional<SupplierProfile> getBySupplierCode(String code) {
+        return store.stream()
+                .filter(s -> code.equals(s.getSupplierCode()))
+                .findFirst();
     }
 
     @Override

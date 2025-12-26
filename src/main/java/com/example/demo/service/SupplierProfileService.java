@@ -11,7 +11,7 @@ public interface SupplierProfileService {
 
     Optional<SupplierProfile> getSupplierById(Long id);
 
-    Optional<SupplierProfile> getBySupplierId(Long id);
+    Optional<SupplierProfile> getBySupplierCode(String code);
 
     List<SupplierProfile> getAllSuppliers();
 
