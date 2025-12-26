@@ -1,13 +1,13 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(
+    name = "purchase_order",
+    uniqueConstraints = @UniqueConstraint(columnNames = "poNumber")
+)
 public class PurchaseOrderRecord {
 
     @Id
@@ -21,62 +21,26 @@ public class PurchaseOrderRecord {
     private LocalDate promisedDeliveryDate;
     private LocalDate issuedDate;
 
-    public PurchaseOrderRecord() {
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getPoNumber() { return poNumber; }
+    public void setPoNumber(String poNumber) { this.poNumber = poNumber; }
 
-    public String getPoNumber() {
-        return poNumber;
-    }
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
 
-    public void setPoNumber(String poNumber) {
-        this.poNumber = poNumber;
-    }
+    public String getItemDescription() { return itemDescription; }
+    public void setItemDescription(String itemDescription) { this.itemDescription = itemDescription; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public String getItemDescription() {
-        return itemDescription;
-    }
-
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public LocalDate getPromisedDeliveryDate() {
-        return promisedDeliveryDate;
-    }
-
+    public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
     public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) {
         this.promisedDeliveryDate = promisedDeliveryDate;
     }
 
-    public LocalDate getIssuedDate() {
-        return issuedDate;
-    }
-
-    public void setIssuedDate(LocalDate issuedDate) {
-        this.issuedDate = issuedDate;
-    }
+    public LocalDate getIssuedDate() { return issuedDate; }
+    public void setIssuedDate(LocalDate issuedDate) { this.issuedDate = issuedDate; }
 }
