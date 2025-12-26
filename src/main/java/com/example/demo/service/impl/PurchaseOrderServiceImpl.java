@@ -11,37 +11,23 @@ import java.util.Optional;
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
-    private final SupplierProfileService supplierService;
     private final List<PurchaseOrderRecord> store = new ArrayList<>();
-
-    public PurchaseOrderServiceImpl(SupplierProfileService supplierService) {
-        this.supplierService = supplierService;
-    }
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
-        SupplierProfile supplier;
-
-        try {
-            supplier = supplierService.getSupplierById(po.getSupplierId());
-        } catch (Exception e) {
-            throw new RuntimeException("BadRequestException");
-        }
-
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
-            throw new RuntimeException("BadRequestException");
-        }
-
-        po.setIssuedDate(LocalDate.now());
         store.add(po);
         return po;
     }
 
     @Override
     public List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId) {
-        return store.stream()
-                .filter(po -> supplierId.equals(po.getSupplierId()))
-                .toList();
+        List<PurchaseOrderRecord> result = new ArrayList<>();
+        for (PurchaseOrderRecord po : store) {
+            if (supplierId.equals(po.getSupplierId())) {
+                result.add(po);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -56,4 +42,3 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         return store;
     }
 }
-
