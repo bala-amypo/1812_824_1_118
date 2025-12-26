@@ -35,10 +35,12 @@ public class PurchaseOrderController {
     public List<PurchaseOrderRecord> getAll() {
         return service.getAllPurchaseOrders();
     }
+
     @GetMapping("/{id}")
-public DeliveryRecord getById(@PathVariable Long id) {
-    return service.getDeliveryById(id)
-            .orElseThrow(() -> new RuntimeException("Delivery not found"));
+public PurchaseOrderRecord getById(@PathVariable Long id) {
+    return service.getPOById(id)
+            .orElseThrow(() -> new RuntimeException("Purchase order not found"));
 }
+
 
 }

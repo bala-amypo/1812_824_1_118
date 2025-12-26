@@ -35,4 +35,11 @@ public class DeliveryRecordController {
     public List<DeliveryRecord> getAll() {
         return service.getAllDeliveries();
     }
+
+    @GetMapping("/{id}")
+public DeliveryRecord getById(@PathVariable Long id) {
+    return service.getDeliveryById(id)
+            .orElseThrow(() -> new RuntimeException("Delivery not found"));
+}
+
 }

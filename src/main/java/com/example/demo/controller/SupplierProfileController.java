@@ -41,4 +41,10 @@ public class SupplierProfileController {
     public SupplierProfile lookup(@PathVariable String supplierCode) {
         return service.getBySupplierCode(supplierCode);
     }
+
+    @GetMapping("/{id}")
+public SupplierProfile getById(@PathVariable Long id) {
+    return service.getSupplierById(id);
+}
+
 }
