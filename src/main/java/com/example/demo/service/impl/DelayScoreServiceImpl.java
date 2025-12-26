@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.model.PurchaseOrderRecord;
@@ -11,10 +10,12 @@ import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
+import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
@@ -23,17 +24,20 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private final PurchaseOrderRecordRepository poRepo;
     private final DeliveryRecordRepository deliveryRepo;
     private final SupplierProfileRepository supplierRepo;
+    private final SupplierRiskAlertService riskAlertService;
 
     public DelayScoreServiceImpl(
             DelayScoreRecordRepository delayRepo,
             PurchaseOrderRecordRepository poRepo,
             DeliveryRecordRepository deliveryRepo,
-            SupplierProfileRepository supplierRepo
-    ) {
+            SupplierProfileRepository supplierRepo,
+            SupplierRiskAlertService riskAlertService) {
+
         this.delayRepo = delayRepo;
         this.poRepo = poRepo;
         this.deliveryRepo = deliveryRepo;
         this.supplierRepo = supplierRepo;
+        this.riskAlertService = riskAlertService;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Supplier not found"));
 
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
+        if (!supplier.getActive()) {
             throw new BadRequestException("Inactive supplier");
         }
 
@@ -54,41 +58,38 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             throw new BadRequestException("No deliveries found");
         }
 
-        DeliveryRecord delivery = deliveries.get(0);
+        DeliveryRecord latest = deliveries.get(deliveries.size() - 1);
 
         long delayDays = ChronoUnit.DAYS.between(
                 po.getPromisedDeliveryDate(),
-                delivery.getActualDeliveryDate()
+                latest.getActualDeliveryDate()
         );
 
-        if (delayDays < 0) delayDays = 0;
+        DelayScoreRecord record = delayRepo.findByPoId(poId)
+                .orElse(new DelayScoreRecord());
 
-        DelayScoreRecord record = new DelayScoreRecord();
         record.setPoId(poId);
         record.setSupplierId(po.getSupplierId());
-        record.setDelayDays((int) delayDays);
+        record.setDelayDays((int) Math.max(delayDays, 0));
 
-        if (delayDays == 0) {
+        if (delayDays <= 0) {
             record.setDelaySeverity("ON_TIME");
             record.setScore(100.0);
-        } else if (delayDays <= 2) {
+        } else if (delayDays <= 3) {
             record.setDelaySeverity("MINOR");
             record.setScore(80.0);
-        } else if (delayDays <= 7) {
-            record.setDelaySeverity("MEDIUM");
-            record.setScore(60.0);
         } else {
             record.setDelaySeverity("SEVERE");
-            record.setScore(30.0);
+            record.setScore(50.0);
         }
 
         return delayRepo.save(record);
     }
 
+    // 🔥 FIXED: must return Optional
     @Override
-    public DelayScoreRecord getScoreById(Long id) {
-        return delayRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Delay score not found"));
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+        return delayRepo.findById(id);
     }
 
     @Override

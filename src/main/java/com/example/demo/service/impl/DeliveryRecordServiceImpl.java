@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
@@ -10,6 +9,7 @@ import com.example.demo.service.DeliveryRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -19,8 +19,8 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     public DeliveryRecordServiceImpl(
             DeliveryRecordRepository deliveryRepo,
-            PurchaseOrderRecordRepository poRepo
-    ) {
+            PurchaseOrderRecordRepository poRepo) {
+
         this.deliveryRepo = deliveryRepo;
         this.poRepo = poRepo;
     }
@@ -39,12 +39,6 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        return deliveryRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery not found"));
-    }
-
-    @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
         return deliveryRepo.findByPoId(poId);
     }
@@ -52,5 +46,11 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
         return deliveryRepo.findAll();
+    }
+
+    // 🔥 FIXED: must return Optional
+    @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepo.findById(id);
     }
 }
