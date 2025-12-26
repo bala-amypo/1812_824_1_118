@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with email: " + email));
 
-        return org.springframework.security.core.userdetails.AppUser.builder()
+        return org.springframework.security.core.userdetails.User
+                .builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities(Collections.emptyList())
