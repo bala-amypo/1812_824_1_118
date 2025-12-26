@@ -24,20 +24,6 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         return repository.save(alert);
     }
 
-    // REQUIRED by DelayScoreService
-    public SupplierRiskAlert createAlertForSupplier(
-            Long supplierId,
-            String level,
-            String message
-    ) {
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setAlertLevel(level);
-        alert.setMessage(message);
-        alert.setResolved(false);
-        return repository.save(alert);
-    }
-
     @Override
     public Optional<SupplierRiskAlert> getAlertById(Long id) {
         return repository.findById(id);

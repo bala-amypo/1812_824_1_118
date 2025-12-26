@@ -1,8 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.DelayScoreRecord;
+import com.example.demo.model.DeliveryRecord;
+import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.DelayScoreRecordRepository;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
@@ -21,7 +27,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private final SupplierProfileRepository supplierRepo;
     private final SupplierRiskAlertService alertService;
 
-    // ⚠️ ORDER MUST MATCH TEST
     public DelayScoreServiceImpl(
             DelayScoreRecordRepository delayRepo,
             PurchaseOrderRecordRepository poRepo,
@@ -75,8 +80,11 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         } else {
             severity = "SEVERE";
             score = 40.0;
-            alertService.createAlert(
-                    new SupplierRiskAlert()
+
+            alertService.createAlertForSupplier(
+                    supplier.getId(),
+                    "HIGH",
+                    "Severe delivery delay"
             );
         }
 
@@ -96,4 +104,12 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     }
 
     @Override
-    public List<DelayScoreRecord> getScoresBySupplier(Long supp
+    public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
+        return delayRepo.findBySupplierId(supplierId);
+    }
+
+    @Override
+    public List<DelayScoreRecord> getAllScores() {
+        return delayRepo.findAll();
+    }
+}
