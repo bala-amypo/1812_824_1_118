@@ -3,11 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.service.DelayScoreService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,8 +30,7 @@ public class DelayScoreController {
 
     @GetMapping("/{id}")
     public DelayScoreRecord getById(@PathVariable Long id) {
-        return service.getScoreById(id)
-                .orElseThrow(() -> new RuntimeException("Delay score not found"));
+        return service.getScoreById(id).orElse(null);
     }
 
     @GetMapping

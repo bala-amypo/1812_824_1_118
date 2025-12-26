@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/risk-alerts")
-@Tag(name = "Supplier Risk Alerts")
+@Tag(name = "Risk Alerts")
 public class SupplierRiskAlertController {
 
     private final SupplierRiskAlertService service;
@@ -31,6 +31,11 @@ public class SupplierRiskAlertController {
     @GetMapping("/supplier/{supplierId}")
     public List<SupplierRiskAlert> getBySupplier(@PathVariable Long supplierId) {
         return service.getAlertsBySupplier(supplierId);
+    }
+
+    @GetMapping("/{id}")
+    public SupplierRiskAlert getById(@PathVariable Long id) {
+        return service.getAlertById(id).orElse(null);
     }
 
     @GetMapping
