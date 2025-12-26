@@ -1,21 +1,17 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    private final SupplierRiskAlertRepository repo;
-
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repo) {
-        this.repo = repo;
-    }
+    private final List<SupplierRiskAlert> alerts = new ArrayList<>();
 
     @Override
     public SupplierRiskAlert createAlertForSupplier(Long supplierId,
@@ -26,25 +22,34 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         alert.setRiskLevel(riskLevel);
         alert.setMessage(message);
         alert.setResolved(false);
-        return repo.save(alert);
+        alerts.add(alert);
+        return alert;
     }
 
     @Override
     public SupplierRiskAlert resolveAlert(Long alertId) {
-        SupplierRiskAlert alert = repo.findById(alertId)
-                .orElseGet(() -> {
-                    SupplierRiskAlert a = new SupplierRiskAlert();
-                    a.setId(alertId);
-                    a.setResolved(false);
-                    return repo.save(a);
-                });
+        SupplierRiskAlert alert = getAlertById(alertId).orElse(null);
+        if (alert != null) {
+            alert.setResolved(true);
+        }
+        return alert;
+    }
 
-        alert.setResolved(true);
-        return repo.save(alert);
+    @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return alerts.stream()
+                .filter(a -> id.equals(a.getId()))
+                .findFirst();
     }
 
     @Override
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return repo.findBySupplierId(supplierId);
+        List<SupplierRiskAlert> result = new ArrayList<>();
+        for (SupplierRiskAlert a : alerts) {
+            if (supplierId.equals(a.getSupplierId())) {
+                result.add(a);
+            }
+        }
+        return result;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -30,7 +31,9 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveries;
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveries.stream()
+                .filter(d -> id.equals(d.getId()))
+                .findFirst();
     }
 }
