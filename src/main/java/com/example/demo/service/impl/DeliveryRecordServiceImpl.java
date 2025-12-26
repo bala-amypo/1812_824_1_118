@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DeliveryRecord;
+import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DeliveryRecordService;
@@ -27,11 +28,11 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
 
-        poRepo.findById(delivery.getPoId())
+        PurchaseOrderRecord po = poRepo.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
         if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >=");
+            throw new BadRequestException("Delivered quantity must be >= 0");
         }
 
         return deliveryRepo.save(delivery);
@@ -43,12 +44,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepo.findById(id);
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveryRepo.findAll();
     }
 
     @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepo.findAll();
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepo.findById(id);
     }
 }
