@@ -2,12 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,15 +21,13 @@ public class SupplierProfileController {
         return service.createSupplier(supplier);
     }
 
+    @GetMapping("/{id}")
+    public SupplierProfile getById(@PathVariable Long id) {
+        return service.getSupplierById(id);
+    }
 
     @GetMapping
     public List<SupplierProfile> getAll() {
         return service.getAllSuppliers();
     }
-
-    @GetMapping("/{id}")
-public SupplierProfile getById(@PathVariable Long id) {
-    return service.getSupplierById(id);
-}
-
 }
