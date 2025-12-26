@@ -20,9 +20,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
-        if (supplier.getActive() == null) {
-            supplier.setActive(true); // 🔴 REQUIRED for tests
-        }
         return repository.save(supplier);
     }
 
@@ -33,8 +30,8 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode);
+    public Optional<SupplierProfile> getBySupplierCode(String code) {
+        return repository.findBySupplierCode(code);
     }
 
     @Override
