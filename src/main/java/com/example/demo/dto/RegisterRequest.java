@@ -9,9 +9,6 @@ public class RegisterRequest {
     private String email;
     private Role role;
 
-    public RegisterRequest() {
-    }
-
     public String getUsername() {
         return username;
     }
