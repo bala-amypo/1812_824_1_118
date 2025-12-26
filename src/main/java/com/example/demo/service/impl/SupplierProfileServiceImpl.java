@@ -11,45 +11,59 @@ import java.util.Optional;
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private final SupplierProfileRepository repository;
-
-    public SupplierProfileServiceImpl(SupplierProfileRepository repository) {
-        this.repository = repository;
-    }
+    private final Map<Long, SupplierProfile> store = new HashMap<>();
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
+        if (supplier == null) {
+            throw new IllegalArgumentException("Supplier cannot be null");
+        }
+
         if (supplier.getActive() == null) {
             supplier.setActive(true);
         }
-        return repository.save(supplier);
+
+        if (supplier.getId() == null) {
+            supplier.setId((long) (store.size() + 1));
+        }
+
+        store.put(supplier.getId(), supplier);
+        return supplier;
     }
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
-        return repository.findById(id)
-                .orElseGet(() -> {
-                    SupplierProfile s = new SupplierProfile();
-                    s.setId(id);
-                    s.setActive(true);
-                    return repository.save(s);
-                });
+        SupplierProfile supplier = store.get(id);
+        if (supplier == null) {
+            throw new RuntimeException("Supplier not found");
+        }
+        return supplier;
     }
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return repository.save(supplier);
+        SupplierProfile supplier = store.get(id);
+        if (supplier == null) {
+            supplier = new SupplierProfile();
+            supplier.setId(id);
+            supplier.setActive(active);
+            store.put(id, supplier);
+        } else {
+            supplier.setActive(active);
+        }
+        return supplier;
     }
 
     @Override
     public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return repository.findBySupplierCode(code);
+        return store.values()
+                .stream()
+                .filter(s -> code.equals(s.getSupplierCode()))
+                .findFirst();
     }
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
-        return repository.findAll();
+        return new ArrayList<>(store.values());
     }
 }
