@@ -1,44 +1,46 @@
-// package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// import com.example.demo.exception.BadRequestException;
-// import com.example.demo.model.DeliveryRecord;
-// import com.example.demo.repository.DeliveryRecordRepository;
-// import com.example.demo.repository.PurchaseOrderRecordRepository;
-// import com.example.demo.service.DeliveryRecordService;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.DeliveryRecord;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.service.DeliveryRecordService;
+import java.util.Optional;
 
-// import java.util.List;
 
-// public class DeliveryRecordServiceImpl implements DeliveryRecordService {
+import java.util.List;
 
-//     private final DeliveryRecordRepository deliveryRepository;
-//     private final PurchaseOrderRecordRepository poRepository;
+public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-//     public DeliveryRecordServiceImpl(
-//             DeliveryRecordRepository deliveryRepository,
-//             PurchaseOrderRecordRepository poRepository) {
-//         this.deliveryRepository = deliveryRepository;
-//         this.poRepository = poRepository;
-//     }
+    private final DeliveryRecordRepository deliveryRepository;
+    private final PurchaseOrderRecordRepository poRepository;
 
-//     @Override
-//     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-//         poRepository.findById(delivery.getPoId())
-//                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
+    public DeliveryRecordServiceImpl(
+            DeliveryRecordRepository deliveryRepository,
+            PurchaseOrderRecordRepository poRepository) {
+        this.deliveryRepository = deliveryRepository;
+        this.poRepository = poRepository;
+    }
 
-//         if (delivery.getDeliveredQuantity() < 0) {
-//             throw new BadRequestException("Delivered quantity must be >=");
-//         }
+    @Override
+    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
+        poRepository.findById(delivery.getPoId())
+                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-//         return deliveryRepository.save(delivery);
-//     }
+        if (delivery.getDeliveredQuantity() < 0) {
+            throw new BadRequestException("Delivered quantity must be >=");
+        }
 
-//     @Override
-//     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-//         return deliveryRepository.findByPoId(poId);
-//     }
+        return deliveryRepository.save(delivery);
+    }
 
-//     @Override
-//     public List<DeliveryRecord> getAllDeliveries() {
-//         return deliveryRepository.findAll();
-//     }
-// }
+    @Override
+    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
+        return deliveryRepository.findByPoId(poId);
+    }
+
+    @Override
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveryRepository.findAll();
+    }
+}
