@@ -5,11 +5,10 @@ import com.example.demo.model.DeliveryRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DeliveryRecordService;
-import java.util.Optional;
-
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -37,6 +36,11 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepository.findById(id);
+    }
+
+    @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
         return deliveryRepository.findByPoId(poId);
     }
@@ -45,10 +49,4 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     public List<DeliveryRecord> getAllDeliveries() {
         return deliveryRepository.findAll();
     }
-
-    @Override
-public Optional<DeliveryRecord> getDeliveryById(Long id) {
-    return deliveryRepository.findById(id);
-}
-
 }

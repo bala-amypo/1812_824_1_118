@@ -17,6 +17,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public AppUser registerUser(AppUser user) {
+        return repo.save(user);
+    }
+
+    @Override
     public AppUser findByUsername(String username) {
         return repo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
