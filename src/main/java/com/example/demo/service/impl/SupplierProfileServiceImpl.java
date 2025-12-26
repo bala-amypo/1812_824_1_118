@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierProfileServiceImpl implements SupplierProfileService {
+public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService { 
+
 
     private final SupplierProfileRepository repository;
 

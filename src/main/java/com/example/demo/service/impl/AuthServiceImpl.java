@@ -20,11 +20,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AppUser findByUsername(String username) {
-        return repo.findByUsername(username).orElse(null);
-    }
-
-    @Override
     public boolean existsByEmail(String email) {
         return repo.existsByEmail(email);
     }

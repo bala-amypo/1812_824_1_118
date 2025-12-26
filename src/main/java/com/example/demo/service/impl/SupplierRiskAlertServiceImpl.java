@@ -9,7 +9,7 @@ import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
+public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService { 
 
     @Autowired
     private SupplierRiskAlertRepository repo;

@@ -6,7 +6,5 @@ public interface AuthService {
 
     AppUser registerUser(AppUser user);
 
-    AppUser findByUsername(String username);
-
     boolean existsByEmail(String email);
 }
