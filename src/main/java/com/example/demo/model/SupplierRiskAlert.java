@@ -20,6 +20,11 @@ public class SupplierRiskAlert {
     public SupplierRiskAlert() {
     }
 
+    // 🔴 REQUIRED BY TEST CASE
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
