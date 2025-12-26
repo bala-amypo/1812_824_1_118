@@ -2,7 +2,6 @@ package com.example.demo.security;
 
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,24 +12,24 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private AppUserRepository userRepository;
+    private final AppUserRepository userRepository;
+
+    public CustomUserDetailsService(AppUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        AppUser user = userRepository.findByUsername(email);
-
-if (user == null) {
-    throw new UsernameNotFoundException("User not found: " + email);
-}
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found: " + username));
 
         return org.springframework.security.core.userdetails.User
-                .builder()
-                .username(user.getEmail())
+                .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .authorities(Collections.emptyList())
                 .build();
-    }`
+    }
 }
