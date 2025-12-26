@@ -3,7 +3,7 @@ package com.example.demo.model;
 public class SupplierProfile {
 
     private Long id;
-    private String code;
+    private String supplierCode;
     private String name;
     private String email;
     private boolean active;
@@ -11,9 +11,9 @@ public class SupplierProfile {
     public SupplierProfile() {
     }
 
-    public SupplierProfile(Long id, String code, boolean active) {
+    public SupplierProfile(Long id, String supplierCode, boolean active) {
         this.id = id;
-        this.code = code;
+        this.supplierCode = supplierCode;
         this.active = active;
     }
 
@@ -25,12 +25,16 @@ public class SupplierProfile {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getSupplierCode() {
+        return supplierCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public boolean getActive() {
+        return active;
     }
 
     public boolean isActive() {

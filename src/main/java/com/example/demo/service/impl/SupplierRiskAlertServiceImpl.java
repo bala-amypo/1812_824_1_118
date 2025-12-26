@@ -29,6 +29,17 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        List<SupplierRiskAlert> result = new ArrayList<>();
+        for (SupplierRiskAlert a : alerts) {
+            if (supplierId.equals(a.getSupplierId())) {
+                result.add(a);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return alerts;
     }
