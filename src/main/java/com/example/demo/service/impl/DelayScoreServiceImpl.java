@@ -85,4 +85,9 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     public List<DelayScoreRecord> getAllScores() {
         return scoreRepository.findAll();
     }
+    @Override
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+    return scoreRepository.findById(id);
+}
+ 
 }
