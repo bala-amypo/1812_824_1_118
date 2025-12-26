@@ -3,7 +3,9 @@ package com.example.demo.service.impl;
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.service.AuthService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthServiceImpl implements AuthService {
 
     private final AppUserRepository repo;
