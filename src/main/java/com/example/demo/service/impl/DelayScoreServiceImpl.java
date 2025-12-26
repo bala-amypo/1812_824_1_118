@@ -1,13 +1,17 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
+import com.example.demo.model.DelayScoreRecord;
+import com.example.demo.model.DeliveryRecord;
+import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.DelayScoreRecordRepository;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -39,25 +43,32 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     public DelayScoreRecord computeDelayScore(Long poId) {
 
         PurchaseOrderRecord po = poRepo.findById(poId)
-                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
+                .orElseThrow(() ->
+                        new BadRequestException("Invalid PO id"));
 
-        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
-                .orElseThrow(() -> new BadRequestException("Supplier not found"));
+        SupplierProfile supplier = supplierRepo
+                .findById(po.getSupplierId())
+                .orElseThrow(() ->
+                        new BadRequestException("Supplier not found"));
 
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
+        if (!supplier.getActive()) {
             throw new BadRequestException("Inactive supplier");
         }
 
-        List<DeliveryRecord> deliveries = deliveryRepo.findByPoId(poId);
+        List<DeliveryRecord> deliveries =
+                deliveryRepo.findByPoId(poId);
+
         if (deliveries.isEmpty()) {
             throw new BadRequestException("No deliveries");
         }
 
-        LocalDate promised = po.getPromisedDeliveryDate();
-        LocalDate actual = deliveries.get(0).getActualDeliveryDate();
-
-        long delayDays = Math.max(0,
-                ChronoUnit.DAYS.between(promised, actual));
+        long delayDays = Math.max(
+                0,
+                ChronoUnit.DAYS.between(
+                        po.getPromisedDeliveryDate(),
+                        deliveries.get(0).getActualDeliveryDate()
+                )
+        );
 
         String severity;
         double score;
@@ -93,11 +104,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     }
 
     @Override
-    public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return delayRepo.findById(id);
-    }
-
-    @Override
     public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
         return delayRepo.findBySupplierId(supplierId);
     }
@@ -105,5 +111,10 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     @Override
     public List<DelayScoreRecord> getAllScores() {
         return delayRepo.findAll();
+    }
+
+    @Override
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+        return delayRepo.findById(id);
     }
 }

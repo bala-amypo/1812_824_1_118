@@ -5,16 +5,18 @@ import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
+public class SupplierRiskAlertServiceImpl
+        implements SupplierRiskAlertService {
 
     private final SupplierRiskAlertRepository repository;
 
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repository) {
+    public SupplierRiskAlertServiceImpl(
+            SupplierRiskAlertRepository repository
+    ) {
         this.repository = repository;
     }
 
@@ -39,8 +41,12 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repository.findById(id);
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert alert = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Alert not found"));
+        alert.setResolved(true);
+        return repository.save(alert);
     }
 
     @Override
@@ -54,11 +60,7 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
-    public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert alert = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Alert not found"));
-        alert.setResolved(true);
-        return repository.save(alert);
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return repository.findById(id);
     }
 }
