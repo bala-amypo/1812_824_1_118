@@ -29,6 +29,11 @@ public class SupplierRiskAlert {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
     public Long getSupplierId() {
         return supplierId;
     }
