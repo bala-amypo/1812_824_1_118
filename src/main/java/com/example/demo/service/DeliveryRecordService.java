@@ -9,9 +9,9 @@ public interface DeliveryRecordService {
 
     DeliveryRecord recordDelivery(DeliveryRecord delivery);
 
-    Optional<DeliveryRecord> getDeliveryById(Long id);
-
     List<DeliveryRecord> getDeliveriesByPO(Long poId);
 
     List<DeliveryRecord> getAllDeliveries();
+
+    Optional<DeliveryRecord> getDeliveryById(Long id);
 }
