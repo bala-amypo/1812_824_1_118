@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.model.PurchaseOrderRecord;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface PurchaseOrderService {
 
@@ -9,7 +11,7 @@ public interface PurchaseOrderService {
 
     List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId);
 
-    PurchaseOrderRecord getPOById(Long id);
+    Optional<PurchaseOrderRecord> getPOById(Long id);
 
     List<PurchaseOrderRecord> getAllPurchaseOrders();
 }
