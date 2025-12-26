@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.DeliveryRecord;
-import java.util.Optional;
-
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DeliveryRecordService {
 
@@ -12,7 +11,7 @@ public interface DeliveryRecordService {
 
     List<DeliveryRecord> getDeliveriesByPO(Long poId);
 
-    List<DeliveryRecord> getAllDeliveries();
-    
     Optional<DeliveryRecord> getDeliveryById(Long id);
+
+    List<DeliveryRecord> getAllDeliveries();
 }

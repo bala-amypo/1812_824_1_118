@@ -14,43 +14,40 @@ import java.util.Optional;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository deliveryRepo;
-    private final PurchaseOrderRecordRepository poRepo;
+    private final DeliveryRecordRepository deliveryRepository;
+    private final PurchaseOrderRecordRepository poRepository;
 
     public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository deliveryRepo,
-            PurchaseOrderRecordRepository poRepo) {
-
-        this.deliveryRepo = deliveryRepo;
-        this.poRepo = poRepo;
+            DeliveryRecordRepository deliveryRepository,
+            PurchaseOrderRecordRepository poRepository
+    ) {
+        this.deliveryRepository = deliveryRepository;
+        this.poRepository = poRepository;
     }
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-
-        PurchaseOrderRecord po = poRepo.findById(delivery.getPoId())
+        PurchaseOrderRecord po = poRepository.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
         if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >= 0");
+            throw new BadRequestException("Delivered quantity must be >=");
         }
-
-        return deliveryRepo.save(delivery);
+        return deliveryRepository.save(delivery);
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return deliveryRepo.findByPoId(poId);
+        return deliveryRepository.findByPoId(poId);
+    }
+
+    @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepository.findById(id);
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepo.findAll();
-    }
-
-    // 🔥 FIXED: must return Optional
-    @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepo.findById(id);
+        return deliveryRepository.findAll();
     }
 }

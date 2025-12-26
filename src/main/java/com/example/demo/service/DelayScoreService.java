@@ -1,5 +1,4 @@
 package com.example.demo.service;
-import org.springframework.stereotype.Service;
 
 import com.example.demo.model.DelayScoreRecord;
 
@@ -10,9 +9,9 @@ public interface DelayScoreService {
 
     DelayScoreRecord computeDelayScore(Long poId);
 
-    Optional<DelayScoreRecord> getScoreById(Long id);
-
     List<DelayScoreRecord> getScoresBySupplier(Long supplierId);
+
+    Optional<DelayScoreRecord> getScoreById(Long id);
 
     List<DelayScoreRecord> getAllScores();
 }

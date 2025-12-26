@@ -7,6 +7,7 @@ import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
@@ -39,5 +40,10 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return repository.findById(id);
     }
 }
