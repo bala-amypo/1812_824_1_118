@@ -8,46 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class DeliveryRecordServiceImpl implements DeliveryRecordService {
+@Override
+public DeliveryRecord recordDelivery(DeliveryRecord record) {
 
-    private final List<DeliveryRecord> store = new ArrayList<>();
-
-    @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord record) {
-
-        if (record.getPoId() == null) {
-            throw new RuntimeException("PO Id is required");
-        }
-
-        if (record.getDeliveredQuantity() <= 0) {
-            throw new RuntimeException("Quantity must be positive");
-        }
-
-        store.add(record);
-        return record;
+    if (record.getDeliveredQuantity() == null || record.getDeliveredQuantity() < 0) {
+        throw new RuntimeException("Delivered quantity must be >=");
     }
 
-    @Override
-    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        List<DeliveryRecord> result = new ArrayList<>();
-        for (DeliveryRecord d : store) {
-            if (poId.equals(d.getPoId())) {
-                result.add(d);
-            }
-        }
-        return result;
-    }
+    poRepository.findById(record.getPoId())
+            .orElseThrow(() -> new RuntimeException("Invalid PO id"));
 
-    @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return store;
-    }
-
-    @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return store.stream()
-                .filter(d -> id.equals(d.getId()))
-                .findFirst();
-    }
+    return deliveryRepository.save(record);
 }
+
+@Override
+public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
+    return deliveryRepository.findByPoId(poId);
+}
+
+@Override
+public List<DeliveryRecord> getAllDeliveries() {
+    return deliveryRepository.findAll();
+}
+
