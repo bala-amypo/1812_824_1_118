@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService { 
-
+public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     private final SupplierProfileRepository repository;
 
+    // ✅ Constructor name MUST match class name
     public SupplierProfileServiceImpl(SupplierProfileRepository repository) {
         this.repository = repository;
     }
