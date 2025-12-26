@@ -15,11 +15,10 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlertForSupplier(Long supplierId,
-                                                    String riskLevel,
+                                                    String risk,
                                                     String message) {
         SupplierRiskAlert alert = new SupplierRiskAlert();
         alert.setSupplierId(supplierId);
-        alert.setRiskLevel(riskLevel);
         alert.setMessage(message);
         alert.setResolved(false);
         alerts.add(alert);
@@ -28,11 +27,12 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert resolveAlert(Long alertId) {
-        SupplierRiskAlert alert = getAlertById(alertId).orElse(null);
-        if (alert != null) {
-            alert.setResolved(true);
+        Optional<SupplierRiskAlert> opt = getAlertById(alertId);
+        if (opt.isPresent()) {
+            opt.get().setResolved(true);
+            return opt.get();
         }
-        return alert;
+        return null;
     }
 
     @Override
@@ -51,5 +51,10 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return alerts;
     }
 }

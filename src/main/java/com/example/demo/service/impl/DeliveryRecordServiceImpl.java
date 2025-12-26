@@ -36,4 +36,9 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
                 .filter(d -> id.equals(d.getId()))
                 .findFirst();
     }
+
+    @Override
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveries;
+    }
 }
