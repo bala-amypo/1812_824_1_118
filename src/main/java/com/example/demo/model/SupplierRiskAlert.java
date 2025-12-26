@@ -24,8 +24,7 @@ public class SupplierRiskAlert {
         return id;
     }
 
-    // ❌ REMOVE DUPLICATE setId — KEEP ONLY ONE
-    public void setId(Long id) {
+    public void setId(Long id) {   // ONLY ONE
         this.id = id;
     }
 
@@ -51,13 +50,5 @@ public class SupplierRiskAlert {
 
     public void setResolved(Boolean resolved) {
         this.resolved = resolved;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
