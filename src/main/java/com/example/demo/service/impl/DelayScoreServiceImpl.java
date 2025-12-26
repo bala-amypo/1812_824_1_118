@@ -15,7 +15,7 @@ import com.example.demo.service.SupplierRiskAlertService;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
     private final DelayScoreRecordRepository scoreRepository;

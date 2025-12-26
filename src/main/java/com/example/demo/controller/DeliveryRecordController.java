@@ -27,10 +27,10 @@ public class DeliveryRecordController {
     }
 
     @GetMapping("/{id}")
-    public DeliveryRecord getById(@PathVariable Long id) {
-        return service.getDeliveryById(id)
-                .orElseThrow(() -> new RuntimeException("Delivery not found"));
-    }
+public DeliveryRecord getById(@PathVariable Long id) {
+    return service.getDeliveryById(id)
+            .orElseThrow(() -> new RuntimeException("Delivery not found"));
+}
 
     @GetMapping("/po/{poId}")
     public List<DeliveryRecord> getByPo(@PathVariable Long poId) {

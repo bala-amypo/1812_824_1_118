@@ -26,10 +26,6 @@ public class SupplierProfileController {
         return service.createSupplier(supplier);
     }
 
-    @GetMapping("/{id}")
-    public SupplierProfile getById(@PathVariable Long id) {
-        return service.getSupplierById(id);
-    }
 
     @GetMapping
     public List<SupplierProfile> getAll() {
