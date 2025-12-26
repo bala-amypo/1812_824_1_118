@@ -2,11 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.repository.DelayScoreRecordRepository;
-import com.example.demo.repository.DeliveryRecordRepository;
-import com.example.demo.repository.PurchaseOrderRecordRepository;
-import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
-import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,29 +11,19 @@ import java.util.Optional;
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final DelayScoreRecordRepository repo;
+    private final DelayScoreRecordRepository scoreRepository;
 
-    public DelayScoreServiceImpl(DelayScoreRecordRepository repo) {
-        this.repo = repo;
-    }
-
-    @Override
-    public DelayScoreRecord computeDelayScore(Long poId) {
-        throw new UnsupportedOperationException("Mock logic");
+    public DelayScoreServiceImpl(DelayScoreRecordRepository scoreRepository) {
+        this.scoreRepository = scoreRepository;
     }
 
     @Override
     public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return repo.findById(id);
-    }
-
-    @Override
-    public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
-        return repo.findBySupplierId(supplierId);
+        return scoreRepository.findById(id);
     }
 
     @Override
     public List<DelayScoreRecord> getAllScores() {
-        return repo.findAll();
+        return scoreRepository.findAll();
     }
 }

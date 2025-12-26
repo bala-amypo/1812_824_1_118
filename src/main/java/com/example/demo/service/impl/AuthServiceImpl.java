@@ -5,6 +5,8 @@ import com.example.demo.repository.AppUserRepository;
 import com.example.demo.service.AuthService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -12,11 +14,6 @@ public class AuthServiceImpl implements AuthService {
 
     public AuthServiceImpl(AppUserRepository repo) {
         this.repo = repo;
-    }
-
-    @Override
-    public AppUser registerUser(AppUser user) {
-        return repo.save(user);
     }
 
     @Override
