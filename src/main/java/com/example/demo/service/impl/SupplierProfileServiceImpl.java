@@ -14,7 +14,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     private final SupplierProfileRepository repository;
 
-    // ✅ Constructor name MUST match class name
     public SupplierProfileServiceImpl(SupplierProfileRepository repository) {
         this.repository = repository;
     }
