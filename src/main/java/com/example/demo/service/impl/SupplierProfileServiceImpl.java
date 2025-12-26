@@ -20,11 +20,11 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getSupplierById(Long id) {
-        return store.stream()
-                .filter(s -> id.equals(s.getId()))
-                .findFirst();
+    public SupplierProfile getSupplierById(Long id) {
+        return supplierProfileRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
+
 
     @Override
     public Optional<SupplierProfile> getBySupplierCode(String code) {
