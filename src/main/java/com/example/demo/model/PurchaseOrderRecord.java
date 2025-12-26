@@ -1,6 +1,11 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDate;
 
 @Entity
@@ -21,26 +26,59 @@ public class PurchaseOrderRecord {
     private LocalDate promisedDeliveryDate;
     private LocalDate issuedDate;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getPoNumber() { return poNumber; }
-    public void setPoNumber(String poNumber) { this.poNumber = poNumber; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+    public String getPoNumber() {
+        return poNumber;
+    }
 
-    public String getItemDescription() { return itemDescription; }
-    public void setItemDescription(String itemDescription) { this.itemDescription = itemDescription; }
+    public void setPoNumber(String poNumber) {
+        this.poNumber = poNumber;
+    }
 
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public Long getSupplierId() {
+        return supplierId;
+    }
 
-    public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDate getPromisedDeliveryDate() {
+        return promisedDeliveryDate;
+    }
+
     public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) {
         this.promisedDeliveryDate = promisedDeliveryDate;
     }
 
-    public LocalDate getIssuedDate() { return issuedDate; }
-    public void setIssuedDate(LocalDate issuedDate) { this.issuedDate = issuedDate; }
+    public LocalDate getIssuedDate() {
+        return issuedDate;
+    }
+
+    public void setIssuedDate(LocalDate issuedDate) {
+        this.issuedDate = issuedDate;
+    }
 }
