@@ -16,22 +16,23 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     private final Map<Long, SupplierProfile> store = new HashMap<>();
 
     @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        if (supplier == null) {
-            return null;
-        }
-
-        if (supplier.getId() == null) {
-            supplier.setId((long) (store.size() + 1));
-        }
-
-        if (supplier.getActive() == null) {
-            supplier.setActive(true);
-        }
-
-        store.put(supplier.getId(), supplier);
-        return supplier;
+public SupplierProfile createSupplier(SupplierProfile supplier) {
+    if (supplier == null) {
+        throw new IllegalArgumentException("Supplier cannot be null");
     }
+
+    if (supplier.getId() == null) {
+        supplier.setId((long) (store.size() + 1));
+    }
+
+    if (supplier.getActive() == null) {
+        supplier.setActive(true);
+    }
+
+    store.put(supplier.getId(), supplier);
+    return supplier;
+}
+
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
@@ -51,12 +52,13 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return store.values()
-                .stream()
-                .filter(s -> code.equals(s.getSupplierCode()))
-                .findFirst();
-    }
+public Optional<SupplierProfile> getBySupplierCode(String code) {
+    return store.values().stream()
+            .filter(s -> code != null)
+            .filter(s -> code.equals(s.getSupplierCode()))
+            .findFirst();
+}
+
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
