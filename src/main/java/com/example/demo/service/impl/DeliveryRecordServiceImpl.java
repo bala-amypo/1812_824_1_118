@@ -13,20 +13,18 @@ import java.util.Optional;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository repo;
+    private final DeliveryRecordRepository deliveryRepo;
     private final PurchaseOrderRecordRepository poRepo;
 
     public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository repo,
-            PurchaseOrderRecordRepository poRepo
-    ) {
-        this.repo = repo;
+            DeliveryRecordRepository deliveryRepo,
+            PurchaseOrderRecordRepository poRepo) {
+        this.deliveryRepo = deliveryRepo;
         this.poRepo = poRepo;
     }
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-
         if (delivery.getDeliveredQuantity() < 0) {
             throw new BadRequestException("Delivered quantity must be >= 0");
         }
@@ -34,21 +32,21 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
         poRepo.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-        return repo.save(delivery);
-    }
-
-    @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return repo.findById(id);
+        return deliveryRepo.save(delivery);
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return repo.findByPoId(poId);
+        return deliveryRepo.findByPoId(poId);
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return repo.findAll();
+        return deliveryRepo.findAll();
+    }
+
+    @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepo.findById(id);
     }
 }

@@ -20,32 +20,16 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        if (alert.getResolved() == null) {
-            alert.setResolved(false);
-        }
-        return repository.save(alert);
-    }
-
-    @Override
-    public SupplierRiskAlert createHighRiskAlert(Long supplierId) {
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setAlertLevel("HIGH");
         alert.setResolved(false);
         return repository.save(alert);
     }
 
     @Override
-    public SupplierRiskAlert resolveAlert(Long alertId) {
-        SupplierRiskAlert alert = repository.findById(alertId)
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert alert = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
         alert.setResolved(true);
         return repository.save(alert);
-    }
-
-    @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repository.findById(id);
     }
 
     @Override
@@ -56,5 +40,10 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return repository.findAll();
+    }
+
+    @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return repository.findById(id);
     }
 }
