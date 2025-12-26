@@ -18,7 +18,7 @@ public class PurchaseOrderRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String status;
     private String poNumber;
     private Long supplierId;
     private String itemDescription;
@@ -32,6 +32,14 @@ public class PurchaseOrderRecord {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getPoNumber() {

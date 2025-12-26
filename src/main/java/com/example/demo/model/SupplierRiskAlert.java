@@ -18,6 +18,8 @@ public class SupplierRiskAlert {
     private String message;
     private LocalDateTime alertDate = LocalDateTime.now();
     private Boolean resolved = false;
+    private String riskLevel;
+
 
     public Long getId() {
         return id;
@@ -33,6 +35,14 @@ public class SupplierRiskAlert {
 
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public String getriskLevel() {
+        return riskLevel;
+    }
+
+    public void setriskLevel(String alertLevel) {
+        this.alertLevel = alertLevel;
     }
 
     public String getAlertLevel() {
