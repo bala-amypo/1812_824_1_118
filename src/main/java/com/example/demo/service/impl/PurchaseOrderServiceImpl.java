@@ -1,14 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.PurchaseOrderService;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +13,8 @@ import java.util.Optional;
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
-    private final List<PurchaseOrderRecord> store = new ArrayList<>();
     private final SupplierProfileService supplierService;
+    private final List<PurchaseOrderRecord> store = new ArrayList<>();
 
     public PurchaseOrderServiceImpl(SupplierProfileService supplierService) {
         this.supplierService = supplierService;
@@ -26,21 +23,14 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
 
+        // ✅ FIX: use getSupplierById
         SupplierProfile supplier = supplierService
-                .getBySupplierId(po.getSupplierId())
-                .orElseThrow(() -> new BadRequestException("Invalid supplier"));
+                .getSupplierById(po.getSupplierId())
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
+        // ✅ FIX: correct active check
         if (!supplier.getActive()) {
-    throw new RuntimeException("Inactive supplier");
-}
-
-
-        if (po.getIssuedDate() == null) {
-            po.setIssuedDate(LocalDate.now());
-        }
-
-        if (po.getStatus() == null) {
-            po.setStatus("CREATED");
+            throw new RuntimeException("Supplier is inactive");
         }
 
         store.add(po);
