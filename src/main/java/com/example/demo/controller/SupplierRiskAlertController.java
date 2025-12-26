@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/risk-alerts")
-@Tag(name = "Risk Alerts")
 public class SupplierRiskAlertController {
 
     private final SupplierRiskAlertService service;

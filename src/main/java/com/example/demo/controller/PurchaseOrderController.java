@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
-@Tag(name = "Purchase Orders")
 public class PurchaseOrderController {
 
     private final PurchaseOrderService service;

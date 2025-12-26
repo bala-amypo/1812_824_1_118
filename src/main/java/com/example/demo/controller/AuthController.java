@@ -12,7 +12,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication")
 public class AuthController {
 
     private final AuthService authService;

@@ -2,14 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/deliveries")
-@Tag(name = "Deliveries")
 public class DeliveryRecordController {
 
     private final DeliveryRecordService service;
