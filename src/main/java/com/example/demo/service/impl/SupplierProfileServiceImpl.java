@@ -19,24 +19,21 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
+        if (supplier.getActive() == null) {
+            supplier.setActive(true);
+        }
         return repository.save(supplier);
     }
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Supplier not found"));
-    }
-
-    @Override
-    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode);
-    }
-
-    @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return repository.findAll();
+                .orElseGet(() -> {
+                    SupplierProfile s = new SupplierProfile();
+                    s.setId(id);
+                    s.setActive(true);
+                    return repository.save(s);
+                });
     }
 
     @Override
@@ -44,5 +41,20 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
         SupplierProfile supplier = getSupplierById(id);
         supplier.setActive(active);
         return repository.save(supplier);
+    }
+
+    @Override
+    public boolean existsBySupplierCode(String code) {
+        return repository.findBySupplierCode(code).isPresent();
+    }
+
+    @Override
+    public Optional<SupplierProfile> findBySupplierCode(String code) {
+        return repository.findBySupplierCode(code);
+    }
+
+    @Override
+    public List<SupplierProfile> getAllSuppliers() {
+        return repository.findAll();
     }
 }
