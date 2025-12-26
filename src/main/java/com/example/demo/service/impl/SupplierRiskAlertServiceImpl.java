@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.stereotype.Service;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
