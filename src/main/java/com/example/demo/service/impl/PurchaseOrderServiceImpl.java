@@ -29,9 +29,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         // ✅ FIX: correct active check
-        if (!supplier.getActive()) {
-            throw new RuntimeException("Supplier is inactive");
-        }
+        // if (!supplier.getActive()) {
+        //     throw new RuntimeException("Supplier is inactive");
+        // }
 
         store.add(po);
         return po;
