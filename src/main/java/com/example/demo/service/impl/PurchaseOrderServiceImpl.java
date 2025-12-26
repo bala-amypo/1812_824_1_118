@@ -30,9 +30,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 .getBySupplierId(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Invalid supplier"));
 
-        if (!supplier.isActive()) {
-            throw new BadRequestException("Inactive supplier");
-        }
+        if (!supplier.getActive()) {
+    throw new RuntimeException("Inactive supplier");
+}
+
 
         if (po.getIssuedDate() == null) {
             po.setIssuedDate(LocalDate.now());

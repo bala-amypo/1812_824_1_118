@@ -21,11 +21,11 @@ public class SupplierProfileController {
     }
 
     @GetMapping("/{id}")
-    public SupplierProfile getById(@PathVariable Long id) {
-        SupplierProfile s = service.getSupplierById(id)
-        .orElseThrow(() -> new RuntimeException("Supplier not found"));
+public SupplierProfile getById(@PathVariable Long id) {
+    return service.getSupplierById(id)
+            .orElseThrow(() -> new RuntimeException("Supplier not found"));
+}
 
-    }
 
     @PatchMapping("/{id}/status")
     public SupplierProfile updateStatus(

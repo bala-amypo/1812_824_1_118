@@ -1,10 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DeliveryRecord;
-import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.DeliveryRecordService;
-import com.example.demo.service.PurchaseOrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,41 +11,28 @@ import java.util.Optional;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final List<DeliveryRecord> deliveries = new ArrayList<>();
-    private final PurchaseOrderService poService;
-
-    public DeliveryRecordServiceImpl(PurchaseOrderService poService) {
-        this.poService = poService;
-    }
+    private final List<DeliveryRecord> store = new ArrayList<>();
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord record) {
 
-        PurchaseOrderRecord po = poService.getPOById(record.getPurchaseOrderId())
-                .orElseThrow(() -> new BadRequestException("Invalid PO"));
-
-        if (record.getQuantity() == null || record.getQuantity() <= 0) {
-            throw new BadRequestException("Invalid quantity");
+        if (record.getPoId() == null) {
+            throw new RuntimeException("PO Id is required");
         }
 
-        int delivered = deliveries.stream()
-                .filter(d -> d.getPurchaseOrderId().equals(po.getId()))
-                .mapToInt(DeliveryRecord::getQuantity)
-                .sum();
-
-        if (delivered + record.getQuantity() > po.getQuantity()) {
-            throw new BadRequestException("Over delivery");
+        if (record.getDeliveredQuantity() <= 0) {
+            throw new RuntimeException("Quantity must be positive");
         }
 
-        deliveries.add(record);
+        store.add(record);
         return record;
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
         List<DeliveryRecord> result = new ArrayList<>();
-        for (DeliveryRecord d : deliveries) {
-            if (poId.equals(d.getPurchaseOrderId())) {
+        for (DeliveryRecord d : store) {
+            if (poId.equals(d.getPoId())) {
                 result.add(d);
             }
         }
@@ -57,12 +41,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return deliveries;
+        return store;
     }
 
     @Override
     public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveries.stream()
+        return store.stream()
                 .filter(d -> id.equals(d.getId()))
                 .findFirst();
     }
