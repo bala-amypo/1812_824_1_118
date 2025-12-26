@@ -19,8 +19,9 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
         return record;
     }
 
+    // 🔥 EXACT NAME
     @Override
-    public List<DeliveryRecord> getDeliveriesByPo(Long poId) {
+    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
         List<DeliveryRecord> result = new ArrayList<>();
         for (DeliveryRecord d : deliveries) {
             if (poId.equals(d.getPoId())) {

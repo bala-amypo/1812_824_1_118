@@ -13,9 +13,18 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     private final List<SupplierRiskAlert> alerts = new ArrayList<>();
 
+    // 🔥 REQUIRED BY INTERFACE
+    @Override
+    public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
+        alert.setResolved(false);
+        alerts.add(alert);
+        return alert;
+    }
+
+    // Helper method used by DelayScoreService
     @Override
     public SupplierRiskAlert createAlertForSupplier(Long supplierId,
-                                                    String risk,
+                                                    String level,
                                                     String message) {
         SupplierRiskAlert alert = new SupplierRiskAlert();
         alert.setSupplierId(supplierId);
@@ -26,8 +35,8 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
-    public SupplierRiskAlert resolveAlert(Long alertId) {
-        Optional<SupplierRiskAlert> opt = getAlertById(alertId);
+    public SupplierRiskAlert resolveAlert(Long id) {
+        Optional<SupplierRiskAlert> opt = getAlertById(id);
         if (opt.isPresent()) {
             opt.get().setResolved(true);
             return opt.get();

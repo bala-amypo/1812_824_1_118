@@ -13,8 +13,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     private final List<PurchaseOrderRecord> store = new ArrayList<>();
 
+    // 🔥 EXACT NAME
     @Override
-    public PurchaseOrderRecord createPO(PurchaseOrderRecord po) {
+    public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
         store.add(po);
         return po;
     }
