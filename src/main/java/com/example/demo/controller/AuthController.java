@@ -8,8 +8,6 @@ import com.example.demo.service.AuthService;
 import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -29,28 +27,29 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
+    public String register(@RequestBody RegisterRequest req) {
 
         AppUser user = new AppUser();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRoles(Set.of(request.getRole()));
+        user.setUsername(req.getUsername());
+        user.setEmail(req.getEmail());
+        user.setPassword(req.getPassword());
+        user.setRole(req.getRole());
 
         AppUser saved = authService.registerUser(user);
         return jwtTokenProvider.generateToken(saved);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public String login(@RequestBody LoginRequest req) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        req.getUsername(),
+                        req.getPassword()
                 )
         );
 
-        AppUser user = authService.findByUsername(request.getEmail())
+        AppUser user = authService.findByUsername(req.getUsername())
                 .orElseThrow();
 
         return jwtTokenProvider.generateToken(user);

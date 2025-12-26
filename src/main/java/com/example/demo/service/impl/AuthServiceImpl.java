@@ -25,16 +25,22 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AppUser registerUser(AppUser user) {
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new BadRequestException("Username already taken");
+        }
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException("Email already registered");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public Optional<AppUser> findByUsername(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<AppUser> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
