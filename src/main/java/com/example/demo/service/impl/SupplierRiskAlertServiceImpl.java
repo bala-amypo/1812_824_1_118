@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
@@ -21,26 +22,6 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
-    public SupplierRiskAlert createAlertForSupplier(Long supplierId, String level, String message) {
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setMessage(message);
-        alert.setResolved(false);
-        alerts.add(alert);
-        return alert;
-    }
-
-    @Override
-    public SupplierRiskAlert resolveAlert(Long id) {
-        Optional<SupplierRiskAlert> opt = getAlertById(id);
-        if (opt.isPresent()) {
-            opt.get().setResolved(true);
-            return opt.get();
-        }
-        return null;
-    }
-
-    @Override
     public Optional<SupplierRiskAlert> getAlertById(Long id) {
         return alerts.stream()
                 .filter(a -> id.equals(a.getId()))
@@ -48,18 +29,15 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        List<SupplierRiskAlert> result = new ArrayList<>();
-        for (SupplierRiskAlert a : alerts) {
-            if (supplierId.equals(a.getSupplierId())) {
-                result.add(a);
-            }
-        }
-        return result;
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return alerts;
     }
 
     @Override
-    public List<SupplierRiskAlert> getAllAlerts() {
-        return alerts;
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert alert = getAlertById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+        alert.setResolved(true);
+        return alert;
     }
 }
