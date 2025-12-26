@@ -20,6 +20,16 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         alerts.add(alert);
         return alert;
     }
+    @Override
+public SupplierRiskAlert createAlertForSupplier(Long supplierId, String riskLevel, String reason) {
+    SupplierRiskAlert alert = new SupplierRiskAlert();
+    alert.setSupplierId(supplierId);
+    alert.setRiskLevel(riskLevel);
+    alert.setResolved(false);
+    alerts.add(alert);
+    return alert;
+}
+
 
     @Override
     public Optional<SupplierRiskAlert> getAlertById(Long id) {

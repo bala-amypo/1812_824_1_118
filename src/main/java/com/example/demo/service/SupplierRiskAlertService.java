@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface SupplierRiskAlertService {
 
     SupplierRiskAlert createAlert(SupplierRiskAlert alert);
+    SupplierRiskAlert createAlertForSupplier(Long supplierId, String riskLevel, String reason);
+
 
     Optional<SupplierRiskAlert> getAlertById(Long id);
 
