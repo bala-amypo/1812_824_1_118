@@ -7,45 +7,49 @@ import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    private final SupplierRiskAlertRepository repo;
+    private final SupplierRiskAlertRepository repository;
 
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repo) {
-        this.repo = repo;
+    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
         if (alert.getResolved() == null) {
-            alert.setResolved(false);
+            alert.setResolved(false); // test expects default false
         }
-        return repo.save(alert);
+        return repository.save(alert);
     }
 
     @Override
     public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert alert = repo.findById(id)
+        SupplierRiskAlert alert = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
         alert.setResolved(true);
-        return repo.save(alert);
+        return repository.save(alert);
     }
 
     @Override
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return repo.findBySupplierId(supplierId);
-    }
-
-    @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repo.findById(id);
+        return repository.findBySupplierId(supplierId);
     }
 
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
-        return repo.findAll();
+        return repository.findAll();
+    }
+
+    // 🔴 THIS FIXES YOUR BUILD ERROR
+    @Override
+    public SupplierRiskAlert createHighRiskAlert(Long supplierId) {
+        SupplierRiskAlert alert = new SupplierRiskAlert();
+        alert.setSupplierId(supplierId);
+        alert.setAlertLevel("HIGH");
+        alert.setResolved(false);
+        return repository.save(alert);
     }
 }

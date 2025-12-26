@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.model.SupplierRiskAlert;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SupplierRiskAlertService {
 
@@ -13,7 +12,8 @@ public interface SupplierRiskAlertService {
 
     List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
 
-    Optional<SupplierRiskAlert> getAlertById(Long id);
-
     List<SupplierRiskAlert> getAllAlerts();
+
+    // 🔴 REQUIRED BY DelayScoreServiceImpl + TESTS
+    SupplierRiskAlert createHighRiskAlert(Long supplierId);
 }

@@ -20,42 +20,42 @@ import java.util.Optional;
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final DelayScoreRecordRepository delayRepo;
-    private final PurchaseOrderRecordRepository poRepo;
-    private final DeliveryRecordRepository deliveryRepo;
-    private final SupplierProfileRepository supplierRepo;
+    private final DelayScoreRecordRepository scoreRepository;
+    private final PurchaseOrderRecordRepository poRepository;
+    private final DeliveryRecordRepository deliveryRepository;
+    private final SupplierProfileRepository supplierRepository;
     private final SupplierRiskAlertService alertService;
 
     public DelayScoreServiceImpl(
-            DelayScoreRecordRepository delayRepo,
-            PurchaseOrderRecordRepository poRepo,
-            DeliveryRecordRepository deliveryRepo,
-            SupplierProfileRepository supplierRepo,
+            DelayScoreRecordRepository scoreRepository,
+            PurchaseOrderRecordRepository poRepository,
+            DeliveryRecordRepository deliveryRepository,
+            SupplierProfileRepository supplierRepository,
             SupplierRiskAlertService alertService
     ) {
-        this.delayRepo = delayRepo;
-        this.poRepo = poRepo;
-        this.deliveryRepo = deliveryRepo;
-        this.supplierRepo = supplierRepo;
+        this.scoreRepository = scoreRepository;
+        this.poRepository = poRepository;
+        this.deliveryRepository = deliveryRepository;
+        this.supplierRepository = supplierRepository;
         this.alertService = alertService;
     }
 
     @Override
     public DelayScoreRecord computeDelayScore(Long poId) {
 
-        PurchaseOrderRecord po = poRepo.findById(poId)
+        PurchaseOrderRecord po = poRepository.findById(poId)
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
+        SupplierProfile supplier = supplierRepository.findById(po.getSupplierId())
                 .orElseThrow(() -> new BadRequestException("Supplier not found"));
 
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
+        if (!supplier.getActive()) {
             throw new BadRequestException("Inactive supplier");
         }
 
-        List<DeliveryRecord> deliveries = deliveryRepo.findByPoId(poId);
+        List<DeliveryRecord> deliveries = deliveryRepository.findByPoId(poId);
         if (deliveries.isEmpty()) {
-            throw new BadRequestException("No deliveries for PO");
+            throw new BadRequestException("No deliveries");
         }
 
         DeliveryRecord delivery = deliveries.get(0);
@@ -83,24 +83,26 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         } else {
             record.setDelaySeverity("SEVERE");
             record.setScore(50.0);
+
+            // 🔴 REQUIRED BY TESTS
             alertService.createHighRiskAlert(po.getSupplierId());
         }
 
-        return delayRepo.save(record);
+        return scoreRepository.save(record);
     }
 
     @Override
     public List<DelayScoreRecord> getScoresBySupplier(Long supplierId) {
-        return delayRepo.findBySupplierId(supplierId);
+        return scoreRepository.findBySupplierId(supplierId);
     }
 
     @Override
     public List<DelayScoreRecord> getAllScores() {
-        return delayRepo.findAll();
+        return scoreRepository.findAll();
     }
 
     @Override
     public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return delayRepo.findById(id);
+        return scoreRepository.findById(id);
     }
 }
