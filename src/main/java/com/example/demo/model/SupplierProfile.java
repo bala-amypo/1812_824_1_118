@@ -6,9 +6,15 @@ public class SupplierProfile {
     private String supplierCode;
     private String supplierName;
     private String email;
-    private boolean active;
+    private Boolean active = true;
 
-    // ---- REQUIRED BY TESTS ----
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getSupplierCode() {
         return supplierCode;
@@ -34,21 +40,11 @@ public class SupplierProfile {
         this.email = email;
     }
 
-    // ⚠️ Tests expect getActive(), NOT isActive()
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    // Optional
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

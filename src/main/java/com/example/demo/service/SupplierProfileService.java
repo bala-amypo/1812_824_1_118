@@ -9,11 +9,11 @@ public interface SupplierProfileService {
 
     SupplierProfile createSupplier(SupplierProfile supplier);
 
-    Optional<SupplierProfile> getSupplierById(Long id);
+    SupplierProfile getSupplierById(Long id);
 
-    Optional<SupplierProfile> getBySupplierCode(String code);
+    SupplierProfile updateSupplierStatus(Long id, boolean active);
 
     List<SupplierProfile> getAllSuppliers();
 
-    SupplierProfile updateSupplierStatus(Long id, boolean active);
+    Optional<SupplierProfile> getBySupplierCode(String code);
 }

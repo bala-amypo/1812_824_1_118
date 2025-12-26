@@ -6,13 +6,16 @@ public class DeliveryRecord {
 
     private Long id;
     private Long poId;
-    private int deliveredQuantity;
+    private Integer deliveredQuantity;
     private LocalDate actualDeliveryDate;
 
-    public DeliveryRecord() {
+    public Long getId() {
+        return id;
     }
 
-    // ---- REQUIRED BY TESTS ----
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getPoId() {
         return poId;
@@ -22,11 +25,11 @@ public class DeliveryRecord {
         this.poId = poId;
     }
 
-    public int getDeliveredQuantity() {
+    public Integer getDeliveredQuantity() {
         return deliveredQuantity;
     }
 
-    public void setDeliveredQuantity(int deliveredQuantity) {
+    public void setDeliveredQuantity(Integer deliveredQuantity) {
         this.deliveredQuantity = deliveredQuantity;
     }
 
@@ -36,14 +39,5 @@ public class DeliveryRecord {
 
     public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
         this.actualDeliveryDate = actualDeliveryDate;
-    }
-
-    // Optional but useful
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
