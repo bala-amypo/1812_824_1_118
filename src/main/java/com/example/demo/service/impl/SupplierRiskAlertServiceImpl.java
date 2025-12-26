@@ -38,16 +38,15 @@ public SupplierRiskAlert createAlertForSupplier(Long supplierId, String riskLeve
                 .findFirst();
     }
 
+  
+
     @Override
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        List<SupplierRiskAlert> result = new ArrayList<>();
-        for (SupplierRiskAlert a : alerts) {
-            if (supplierId.equals(a.getSupplierId())) {
-                result.add(a);
-            }
-        }
-        return result;
-    }
+public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+    return alerts.stream()
+            .filter(a -> supplierId.equals(a.getSupplierId()))
+            .toList();
+}
+
 
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
