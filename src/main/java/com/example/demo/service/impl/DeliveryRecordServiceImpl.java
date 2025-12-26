@@ -1,35 +1,44 @@
-package com.example.demo.service.impl;
+// package com.example.demo.service.impl;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.example.demo.model.DeliveryRecord;
-import com.example.demo.repository.DeliveryRecordRepository;
-import com.example.demo.service.DeliveryRecordService;
+// import com.example.demo.exception.BadRequestException;
+// import com.example.demo.model.DeliveryRecord;
+// import com.example.demo.repository.DeliveryRecordRepository;
+// import com.example.demo.repository.PurchaseOrderRecordRepository;
+// import com.example.demo.service.DeliveryRecordService;
 
-@Service
-public class DeliveryRecordServiceImpl implements DeliveryRecordService {
+// import java.util.List;
 
-    @Autowired
-    private DeliveryRecordRepository repo;
+// public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-        return repo.save(delivery);
-    }
+//     private final DeliveryRecordRepository deliveryRepository;
+//     private final PurchaseOrderRecordRepository poRepository;
 
-    @Override
-    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return repo.findByPoId(poId);
-    }
+//     public DeliveryRecordServiceImpl(
+//             DeliveryRecordRepository deliveryRepository,
+//             PurchaseOrderRecordRepository poRepository) {
+//         this.deliveryRepository = deliveryRepository;
+//         this.poRepository = poRepository;
+//     }
 
-    @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
+//     @Override
+//     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
+//         poRepository.findById(delivery.getPoId())
+//                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-    @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return repo.findAll();
-    }
-}
+//         if (delivery.getDeliveredQuantity() < 0) {
+//             throw new BadRequestException("Delivered quantity must be >=");
+//         }
+
+//         return deliveryRepository.save(delivery);
+//     }
+
+//     @Override
+//     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
+//         return deliveryRepository.findByPoId(poId);
+//     }
+
+//     @Override
+//     public List<DeliveryRecord> getAllDeliveries() {
+//         return deliveryRepository.findAll();
+//     }
+// }

@@ -1,16 +1,11 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.JoinColumn;
-
-import java.time.LocalDateTime;
-import java.util.Set;
+import jakarta.persistence.Id;
 
 @Entity
 public class AppUser {
@@ -22,10 +17,13 @@ public class AppUser {
     private String username;
     private String email;
     private String password;
-    private String roles;
-    private String createdAt;
 
-    
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public AppUser() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -58,33 +56,11 @@ public class AppUser {
         this.password = password;
     }
 
-    public String getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    
-
-    public AppUser(Long id, String username, String email,String password, String roles, String createdAt) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.createdAt = createdAt;
-    }
-
-    public AppUser() {
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
