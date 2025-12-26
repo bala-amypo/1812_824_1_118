@@ -1,10 +1,12 @@
-
 package com.example.demo.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.model.SupplierProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SupplierProfileRepository extends JpaRepository<SupplierProfile, Long> {
+import java.util.Optional;
 
-    SupplierProfile findBySupplierCode(String supplierCode);
+public interface SupplierProfileRepository
+        extends JpaRepository<SupplierProfile, Long> {
+
+    Optional<SupplierProfile> findBySupplierCode(String supplierCode);
 }
