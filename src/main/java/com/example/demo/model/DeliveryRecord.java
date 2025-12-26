@@ -1,22 +1,19 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.time.LocalDate;
-
-@Entity
 public class DeliveryRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long purchaseOrderId;
+    private Integer quantity;
 
-    private Long poId;
-    private LocalDate actualDeliveryDate;
-    private Integer deliveredQuantity;
-    private String notes;
+    public DeliveryRecord() {
+    }
+
+    public DeliveryRecord(Long id, Long purchaseOrderId, Integer quantity) {
+        this.id = id;
+        this.purchaseOrderId = purchaseOrderId;
+        this.quantity = quantity;
+    }
 
     public Long getId() {
         return id;
@@ -26,35 +23,19 @@ public class DeliveryRecord {
         this.id = id;
     }
 
-    public Long getPoId() {
-        return poId;
+    public Long getPurchaseOrderId() {
+        return purchaseOrderId;
     }
 
-    public void setPoId(Long poId) {
-        this.poId = poId;
+    public void setPurchaseOrderId(Long purchaseOrderId) {
+        this.purchaseOrderId = purchaseOrderId;
     }
 
-    public LocalDate getActualDeliveryDate() {
-        return actualDeliveryDate;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
-        this.actualDeliveryDate = actualDeliveryDate;
-    }
-
-    public Integer getDeliveredQuantity() {
-        return deliveredQuantity;
-    }
-
-    public void setDeliveredQuantity(Integer deliveredQuantity) {
-        this.deliveredQuantity = deliveredQuantity;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

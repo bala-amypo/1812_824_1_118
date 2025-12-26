@@ -1,30 +1,21 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(
-    name = "supplier_profile",
-    uniqueConstraints = @UniqueConstraint(columnNames = "supplierCode")
-)
 public class SupplierProfile {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String supplierCode;
-    private String supplierName;
+    private String code;
+    private String name;
     private String email;
-    private String phone;
-    private Boolean active = true;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private boolean active;
+
+    public SupplierProfile() {
+    }
+
+    public SupplierProfile(Long id, String code, boolean active) {
+        this.id = id;
+        this.code = code;
+        this.active = active;
+    }
 
     public Long getId() {
         return id;
@@ -34,20 +25,20 @@ public class SupplierProfile {
         this.id = id;
     }
 
-    public String getSupplierCode() {
-        return supplierCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getEmail() {
@@ -56,25 +47,5 @@ public class SupplierProfile {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }

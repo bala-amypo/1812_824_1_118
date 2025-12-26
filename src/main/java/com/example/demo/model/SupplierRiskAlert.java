@@ -37,12 +37,12 @@ public class SupplierRiskAlert {
         this.supplierId = supplierId;
     }
 
-    public String getriskLevel() {
+    public String getRiskLevel() {
         return riskLevel;
     }
 
-    public void setriskLevel(String alertLevel) {
-        this.alertLevel = alertLevel;
+    public void setRiskLevel(String riskLevel) {
+        this.riskLevel = riskLevel;
     }
 
     public String getAlertLevel() {
