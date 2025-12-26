@@ -11,11 +11,9 @@ public interface SupplierProfileService {
 
     Optional<SupplierProfile> getSupplierById(Long id);
 
-    SupplierProfile updateSupplierStatus(Long id, boolean active);
-
-    Optional<SupplierProfile> getBySupplierId(Long supplierId);
-
-    Optional<SupplierProfile> getBySupplierCode(String code);
+    Optional<SupplierProfile> getBySupplierId(Long id);
 
     List<SupplierProfile> getAllSuppliers();
+
+    SupplierProfile updateSupplierStatus(Long id, boolean active);
 }

@@ -5,19 +5,11 @@ import java.time.LocalDate;
 public class DeliveryRecord {
 
     private Long id;
-    private Long purchaseOrderId;
-    private Integer quantity;
+    private Long poId;
+    private int deliveredQuantity;
     private LocalDate actualDeliveryDate;
 
-    public DeliveryRecord() {
-    }
-
-    public DeliveryRecord(Long id, Long purchaseOrderId, Integer quantity) {
-        this.id = id;
-        this.purchaseOrderId = purchaseOrderId;
-        this.quantity = quantity;
-        this.actualDeliveryDate = LocalDate.now();
-    }
+    // ----- getters & setters -----
 
     public Long getId() {
         return id;
@@ -27,22 +19,25 @@ public class DeliveryRecord {
         this.id = id;
     }
 
-    public Long getPurchaseOrderId() {
-        return purchaseOrderId;
+    // REQUIRED BY TESTS
+    public Long getPoId() {
+        return poId;
     }
 
-    public void setPurchaseOrderId(Long purchaseOrderId) {
-        this.purchaseOrderId = purchaseOrderId;
+    public void setPoId(Long poId) {
+        this.poId = poId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    // REQUIRED BY TESTS
+    public int getDeliveredQuantity() {
+        return deliveredQuantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setDeliveredQuantity(int deliveredQuantity) {
+        this.deliveredQuantity = deliveredQuantity;
     }
 
+    // REQUIRED BY DelayScore tests
     public LocalDate getActualDeliveryDate() {
         return actualDeliveryDate;
     }
