@@ -12,6 +12,7 @@ import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.DelayScoreService;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private final SupplierProfileRepository supplierRepo;
     private final SupplierRiskAlertService alertService;
 
+    // REQUIRED CONSTRUCTOR ORDER (TESTED)
     public DelayScoreServiceImpl(
             DelayScoreRecordRepository delayRepo,
             PurchaseOrderRecordRepository poRepo,
@@ -46,8 +48,7 @@ public class DelayScoreServiceImpl implements DelayScoreService {
                 .orElseThrow(() ->
                         new BadRequestException("Invalid PO id"));
 
-        SupplierProfile supplier = supplierRepo
-                .findById(po.getSupplierId())
+        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
                 .orElseThrow(() ->
                         new BadRequestException("Supplier not found"));
 
@@ -62,13 +63,11 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             throw new BadRequestException("No deliveries");
         }
 
-        long delayDays = Math.max(
-                0,
-                ChronoUnit.DAYS.between(
-                        po.getPromisedDeliveryDate(),
-                        deliveries.get(0).getActualDeliveryDate()
-                )
-        );
+        LocalDate promised = po.getPromisedDeliveryDate();
+        LocalDate actual = deliveries.get(0).getActualDeliveryDate();
+
+        long delayDays =
+                Math.max(0, ChronoUnit.DAYS.between(promised, actual));
 
         String severity;
         double score;
@@ -85,7 +84,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         } else {
             severity = "SEVERE";
             score = 40.0;
-
             alertService.createAlertForSupplier(
                     supplier.getId(),
                     "HIGH",
@@ -109,12 +107,12 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     }
 
     @Override
-    public List<DelayScoreRecord> getAllScores() {
-        return delayRepo.findAll();
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+        return delayRepo.findById(id);
     }
 
     @Override
-    public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return delayRepo.findById(id);
+    public List<DelayScoreRecord> getAllScores() {
+        return delayRepo.findAll();
     }
 }
