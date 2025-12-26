@@ -2,9 +2,7 @@ package com.example.demo.security;
 
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -26,8 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found: " + username));
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
+        return User.builder()
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(Collections.emptyList())
                 .build();
