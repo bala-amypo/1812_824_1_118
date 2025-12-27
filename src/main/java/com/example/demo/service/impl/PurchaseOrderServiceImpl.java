@@ -28,10 +28,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         SupplierProfile supplier =
                 supplierService.getSupplierById(po.getSupplierId());
 
-        if (!"ACTIVE".equalsIgnoreCase(supplier.getStatus())) {
-            po.setStatus("REJECTED");
+        if (!"ACTIVE".equalsIgnoreCase(supplier.getActive())) {
+            po.setActive("REJECTED");
         } else {
-            po.setStatus("CREATED");
+            po.setActive("CREATED");
         }
 
         po.setId(seq++);
