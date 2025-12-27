@@ -24,44 +24,35 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
-        SupplierProfile supplier;
-        try {
-            supplier = supplierService.getSupplierById(po.getSupplierId());
-        } catch (Exception e) {
-            throw new BadRequestException("Invalid supplierId");
-        }
+        SupplierProfile supplier = supplierService.getSupplierById(po.getSupplierId());
 
-        if (!supplier.getActive()) {
-            throw new BadRequestException("Supplier must be active");
+        if (!supplier.isActive()) {
+            po.setStatus("REJECTED");
+        } else {
+            po.setStatus("CREATED");
         }
 
         po.setId(seq++);
-        if (po.getIssuedDate() == null) {
-            po.setIssuedDate(LocalDate.now());
-        }
-
+        po.setIssuedDate(LocalDate.now());
         store.put(po.getId(), po);
         return po;
     }
 
     @Override
+    public PurchaseOrderRecord getPOById(Long id) {
+        return store.get(id);
+    }
+
+    @Override
     public List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId) {
-        List<PurchaseOrderRecord> list = new ArrayList<>();
-        for (PurchaseOrderRecord p : store.values()) {
-            if (supplierId.equals(p.getSupplierId())) {
-                list.add(p);
-            }
-        }
-        return list;
+        return store.values().stream()
+                .filter(po -> supplierId.equals(po.getSupplierId()))
+                .toList();
     }
 
     @Override
-    public Optional<PurchaseOrderRecord> getPOById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-
-    @Override
-    public List<PurchaseOrderRecord> getAllPurchaseOrders() {
+    public List<PurchaseOrderRecord> getAllPOs() {
         return new ArrayList<>(store.values());
     }
 }
+

@@ -18,42 +18,34 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     private static long seq = 1;
 
     @Override
-    public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        alert.setId(seq++);
-        alert.setResolved(false);
-        store.put(alert.getId(), alert);
-        return alert;
-    }
-
-    @Override
     public SupplierRiskAlert createAlertForSupplier(
             Long supplierId, String level, String message) {
 
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setAlertLevel(level);
-        alert.setMessage(message);
-        return createAlert(alert);
+        SupplierRiskAlert a = new SupplierRiskAlert();
+        a.setId(seq++);
+        a.setSupplierId(supplierId);
+        a.setAlertLevel(level);
+        a.setMessage(message);
+        a.setResolved(false);
+
+        store.put(a.getId(), a);
+        return a;
     }
 
     @Override
-    public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return Optional.ofNullable(store.get(id));
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert a = store.get(id);
+        if (a != null) {
+            a.setResolved(true);
+        }
+        return a;
     }
 
     @Override
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
         return store.values().stream()
                 .filter(a -> supplierId.equals(a.getSupplierId()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert a = store.get(id);
-        if (a == null) return null;
-        a.setResolved(true);
-        return a;
+                .toList();
     }
 
     @Override
@@ -61,4 +53,8 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         return new ArrayList<>(store.values());
     }
 
+    @Override
+    public SupplierRiskAlert getAlertById(Long id) {
+        return store.get(id);
+    }
 }

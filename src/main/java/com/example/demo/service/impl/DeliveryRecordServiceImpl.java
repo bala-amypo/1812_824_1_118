@@ -23,13 +23,17 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord record) {
-        Optional<PurchaseOrderRecord> po = poService.getPOById(record.getPoId());
-        if (po.isEmpty()) {
-            throw new BadRequestException("Invalid PO id");
+
+        if (record.getDeliveredQuantity() <= 0) {
+            return null;
         }
 
-        if (record.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >= 0");
+        // Optional-returning service
+        Optional<PurchaseOrderRecord> po =
+                poService.getPOById(record.getPoId());
+
+        if (po.isEmpty()) {
+            return null;
         }
 
         record.setId(seq++);
@@ -38,28 +42,20 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        List<DeliveryRecord> list = new ArrayList<>();
-        for (DeliveryRecord d : store.values()) {
-            if (poId.equals(d.getPoId())) {
-                list.add(d);
-            }
-        }
-        return list;
+        return store.values()
+                .stream()
+                .filter(d -> poId.equals(d.getPoId()))
+                .toList();
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
         return new ArrayList<>(store.values());
     }
-
-    @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        DeliveryRecord d = store.get(id);
-        if (d == null) {
-            throw new RuntimeException("Delivery not found");
-        }
-        return d;
-    }
-
 }
