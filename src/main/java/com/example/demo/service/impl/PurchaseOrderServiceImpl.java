@@ -24,9 +24,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
-        SupplierProfile supplier = supplierService.getSupplierById(po.getSupplierId());
 
-        if (!supplier.isActive()) {
+        SupplierProfile supplier =
+                supplierService.getSupplierById(po.getSupplierId());
+
+        if (!"ACTIVE".equalsIgnoreCase(supplier.getStatus())) {
             po.setStatus("REJECTED");
         } else {
             po.setStatus("CREATED");
@@ -39,8 +41,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public PurchaseOrderRecord getPOById(Long id) {
-        return store.get(id);
+    public Optional<PurchaseOrderRecord> getPOById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
@@ -51,8 +53,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public List<PurchaseOrderRecord> getAllPOs() {
+    public List<PurchaseOrderRecord> getAllPurchaseOrders() {
         return new ArrayList<>(store.values());
     }
 }
-

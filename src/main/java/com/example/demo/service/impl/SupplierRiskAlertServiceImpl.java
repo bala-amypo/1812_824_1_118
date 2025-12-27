@@ -33,17 +33,21 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     }
 
     @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
     public SupplierRiskAlert resolveAlert(Long id) {
         SupplierRiskAlert a = store.get(id);
-        if (a != null) {
-            a.setResolved(true);
-        }
+        if (a != null) a.setResolved(true);
         return a;
     }
 
     @Override
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return store.values().stream()
+        return store.values()
+                .stream()
                 .filter(a -> supplierId.equals(a.getSupplierId()))
                 .toList();
     }
@@ -51,10 +55,5 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return new ArrayList<>(store.values());
-    }
-
-    @Override
-    public SupplierRiskAlert getAlertById(Long id) {
-        return store.get(id);
     }
 }

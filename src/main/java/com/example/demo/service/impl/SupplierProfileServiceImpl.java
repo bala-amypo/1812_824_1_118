@@ -15,7 +15,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
         supplier.setId(seq++);
-        supplier.setActive(true);
         store.put(supplier.getId(), supplier);
         return supplier;
     }
@@ -25,31 +24,31 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
         return store.computeIfAbsent(id, k -> {
             SupplierProfile s = new SupplierProfile();
             s.setId(k);
-            s.setActive(true);
-            s.setCode("SUP-" + k);
+            s.setSupplierCode("SUP-" + k);
+            s.setStatus("ACTIVE");
             return s;
         });
     }
 
     @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
+    public SupplierProfile getBySupplierCode(String code) {
+        return store.values()
+                .stream()
+                .filter(s -> code.equals(s.getSupplierCode()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public SupplierProfile updateSupplierStatus(Long id, String status) {
         SupplierProfile s = getSupplierById(id);
-        s.setActive(active);
+        s.setStatus(status);
         return s;
     }
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
         return new ArrayList<>(store.values());
-    }
-
-    @Override
-    public SupplierProfile findByCode(String code) {
-        return store.values()
-                .stream()
-                .filter(s -> code.equals(s.getCode()))
-                .findFirst()
-                .orElse(null);
     }
 }
 
