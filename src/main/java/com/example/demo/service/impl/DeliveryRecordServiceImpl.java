@@ -54,7 +54,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return Optional.ofNullable(store.get(id));
+    public DeliveryRecord getDeliveryById(Long id) {
+        DeliveryRecord d = store.get(id);
+        if (d == null) {
+            throw new RuntimeException("Delivery not found");
+        }
+        return d;
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         a.setResolved(true);
         return a;
     }
-    
+
     @Override
     public List<SupplierRiskAlert> getAllAlerts() {
         return new ArrayList<>(store.values());
