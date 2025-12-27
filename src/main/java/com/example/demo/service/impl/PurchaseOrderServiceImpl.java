@@ -28,11 +28,12 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
 
         SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
-                .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
+    .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
 
-        if (!Boolean.TRUE.equals(supplier.getActive())) {
-            throw new BadRequestException("Supplier must be active");
-        }
+if (supplier.getActive() == null || !supplier.getActive()) {
+    throw new BadRequestException("Supplier must be active");
+}
+
 
         return poRepo.save(po);
     }
