@@ -19,7 +19,7 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        alert.setResolved(false); // ✅ default
+        alert.setResolved(false);
         return repository.save(alert);
     }
 
@@ -36,8 +36,14 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     @Override
     public SupplierRiskAlert resolveAlert(Long id) {
         SupplierRiskAlert alert = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+                .orElseThrow(() -> new RuntimeException("Alert not found"));
         alert.setResolved(true);
         return repository.save(alert);
+    }
+
+    // ✅ FIXED METHOD — MATCHES INTERFACE
+    @Override
+    public Optional<SupplierRiskAlert> getAlertById(Long id) {
+        return repository.findById(id);
     }
 }

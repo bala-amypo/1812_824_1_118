@@ -42,4 +42,11 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     public List<DeliveryRecord> getAllDeliveries() {
         return deliveryRepository.findAll();
     }
+
+    // ✅ MISSING METHOD FIX
+    @Override
+    public DeliveryRecord getDeliveryById(Long id) {
+        return deliveryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Delivery not found"));
+    }
 }
