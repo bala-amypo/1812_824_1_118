@@ -1,14 +1,14 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-
-
+import java.util.stream.Collectors;
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
@@ -44,7 +44,7 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
     public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
         return store.values().stream()
                 .filter(a -> supplierId.equals(a.getSupplierId()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
