@@ -21,34 +21,29 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
-        return store.computeIfAbsent(id, k -> {
-            SupplierProfile s = new SupplierProfile();
-            s.setId(k);
-            s.setSupplierCode("SUP-" + k);
-            s.setStatus("ACTIVE");
-            return s;
-        });
+        SupplierProfile supplier = store.get(id);
+        if (supplier == null) {
+            throw new RuntimeException("Supplier not found");
+        }
+        return supplier;
     }
 
     @Override
-    public SupplierProfile getBySupplierCode(String code) {
-        return store.values()
-                .stream()
-                .filter(s -> code.equals(s.getSupplierCode()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public SupplierProfile updateSupplierStatus(Long id, String status) {
-        SupplierProfile s = getSupplierById(id);
-        s.setStatus(status);
-        return s;
+    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
+        SupplierProfile supplier = getSupplierById(id);
+        supplier.setActive(active);
+        return supplier;
     }
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
         return new ArrayList<>(store.values());
     }
-}
 
+    @Override
+    public Optional<SupplierProfile> getBySupplierCode(String code) {
+        return store.values().stream()
+                .filter(s -> code.equals(s.getSupplierCode()))
+                .findFirst();
+    }
+}

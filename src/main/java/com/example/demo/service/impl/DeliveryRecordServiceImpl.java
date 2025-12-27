@@ -1,13 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DeliveryRecord;
-import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.DeliveryRecordService;
 import com.example.demo.service.PurchaseOrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -15,25 +15,18 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     private static final Map<Long, DeliveryRecord> store = new HashMap<>();
     private static long seq = 1;
 
-    private final PurchaseOrderService poService;
-
-    public DeliveryRecordServiceImpl(PurchaseOrderService poService) {
-        this.poService = poService;
-    }
+    @Autowired
+    private PurchaseOrderService poService;
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord record) {
-
-        if (record.getDeliveredQuantity() <= 0) {
-            return null;
+        if (record == null || record.getQuantity() <= 0) {
+            throw new RuntimeException("Invalid delivery quantity");
         }
 
-        // Optional-returning service
-        Optional<PurchaseOrderRecord> po =
-                poService.getPOById(record.getPoId());
-
-        if (po.isEmpty()) {
-            return null;
+        // validate PO exists
+        if (poService.getPOById(record.getPurchaseOrderId()).isEmpty()) {
+            throw new RuntimeException("Purchase order not found");
         }
 
         record.setId(seq++);
@@ -42,20 +35,23 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-
-    @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return store.values()
-                .stream()
-                .filter(d -> poId.equals(d.getPoId()))
-                .toList();
+        return store.values().stream()
+                .filter(d -> poId.equals(d.getPurchaseOrderId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public DeliveryRecord getDeliveryById(Long id) {
+        DeliveryRecord record = store.get(id);
+        if (record == null) {
+            throw new RuntimeException("Delivery not found");
+        }
+        return record;
     }
 }
