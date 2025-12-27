@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "supplier_risk_alert")
 public class SupplierRiskAlert {
 
     @Id
@@ -14,62 +11,39 @@ public class SupplierRiskAlert {
     private Long id;
 
     private Long supplierId;
-    private String alertLevel;
-    private String message;
-    private LocalDateTime alertDate = LocalDateTime.now();
+    private String alertType;
+    private String description;
     private Boolean resolved = false;
-    private String riskLevel;
+    private String alertLevel;
 
-
-    public Long getId() {
-        return id;
+    // ✅ REQUIRED no-args constructor
+    public SupplierRiskAlert() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
+    // ✅ SAFE constructor for tests
+    public SupplierRiskAlert(Long supplierId, String alertType,
+                             String description, String alertLevel) {
         this.supplierId = supplierId;
-    }
-
-    public String getRiskLevel() {
-        return riskLevel;
-    }
-
-    public void setRiskLevel(String riskLevel) {
-        this.riskLevel = riskLevel;
-    }
-
-    public String getAlertLevel() {
-        return alertLevel;
-    }
-
-    public void setAlertLevel(String alertLevel) {
+        this.alertType = alertType;
+        this.description = description;
         this.alertLevel = alertLevel;
     }
 
-    public String getMessage() {
-        return message;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
 
-    public LocalDateTime getAlertDate() {
-        return alertDate;
-    }
+    public String getAlertType() { return alertType; }
+    public void setAlertType(String alertType) { this.alertType = alertType; }
 
-    public Boolean getResolved() {
-        return resolved;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setResolved(Boolean resolved) {
-        this.resolved = resolved;
-    }
+    public Boolean getResolved() { return resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+
+    public String getAlertLevel() { return alertLevel; }
+    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
 }

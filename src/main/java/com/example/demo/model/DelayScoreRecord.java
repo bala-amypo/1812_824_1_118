@@ -1,80 +1,49 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 @Entity
-@Table(
-    name = "delay_score",
-    uniqueConstraints = @UniqueConstraint(columnNames = "poId")
-)
+@Table(name = "delay_score_record")
 public class DelayScoreRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long supplierId;
     private Long poId;
+    private Long supplierId;
     private Integer delayDays;
-    private String delaySeverity;
     private Double score;
-    private LocalDateTime computedAt = LocalDateTime.now();
+    private String delaySeverity;
 
-    public Long getId() {
-        return id;
+  
+    public DelayScoreRecord() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
-    }
-
-    public Long getPoId() {
-        return poId;
-    }
-
-    public void setPoId(Long poId) {
+    public DelayScoreRecord(Long poId, Long supplierId, Integer delayDays,
+                            Double score, String delaySeverity) {
         this.poId = poId;
-    }
-
-    public Integer getDelayDays() {
-        return delayDays;
-    }
-
-    public void setDelayDays(Integer delayDays) {
+        this.supplierId = supplierId;
         this.delayDays = delayDays;
-    }
-
-    public String getDelaySeverity() {
-        return delaySeverity;
-    }
-
-    public void setDelaySeverity(String delaySeverity) {
+        this.score = score;
         this.delaySeverity = delaySeverity;
     }
 
-    public Double getScore() {
-        return score;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setScore(Double score) {
-        this.score = score;
-    }
+    public Long getPoId() { return poId; }
+    public void setPoId(Long poId) { this.poId = poId; }
 
-    public LocalDateTime getComputedAt() {
-        return computedAt;
-    }
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+
+    public Integer getDelayDays() { return delayDays; }
+    public void setDelayDays(Integer delayDays) { this.delayDays = delayDays; }
+
+    public Double getScore() { return score; }
+    public void setScore(Double score) { this.score = score; }
+
+    public String getDelaySeverity() { return delaySeverity; }
+    public void setDelaySeverity(String delaySeverity) { this.delaySeverity = delaySeverity; }
 }
