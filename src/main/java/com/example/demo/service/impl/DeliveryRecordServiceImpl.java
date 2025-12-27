@@ -9,7 +9,6 @@ import com.example.demo.service.DeliveryRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -47,9 +46,9 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
         return deliveryRepo.findAll();
     }
 
-    // 🔴 REQUIRED BY INTERFACE
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepo.findById(id);
+    public DeliveryRecord getDeliveryById(Long id) {
+        return deliveryRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Delivery not found"));
     }
 }
