@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,29 +12,24 @@ import java.util.List;
 @RequestMapping("/api/deliveries")
 public class DeliveryRecordController {
 
-    private final DeliveryRecordService service;
-
-    public DeliveryRecordController(DeliveryRecordService service) {
-        this.service = service;
-    }
+    @Autowired
+    private DeliveryRecordService deliveryRecordService;
 
     @PostMapping
-    public DeliveryRecord recordDelivery(@RequestBody DeliveryRecord record) {
-        return service.recordDelivery(record);
-    }
-
-    @GetMapping("/{id}")
-    public DeliveryRecord getById(@PathVariable Long id) {
-        return service.getDeliveryById(id); // ✅ NO orElse here
-    }
-
-    @GetMapping("/po/{poId}")
-    public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
-        return service.getDeliveriesByPO(poId);
+    public ResponseEntity<DeliveryRecord> recordDelivery(@RequestBody DeliveryRecord delivery) {
+        DeliveryRecord recorded = deliveryRecordService.recordDelivery(delivery);
+        return ResponseEntity.ok(recorded);
     }
 
     @GetMapping
-    public List<DeliveryRecord> getAll() {
-        return service.getAllDeliveries();
+    public ResponseEntity<List<DeliveryRecord>> getAllDeliveries() {
+        List<DeliveryRecord> deliveries = deliveryRecordService.getAllDeliveries();
+        return ResponseEntity.ok(deliveries);
+    }
+
+    @GetMapping("/po/{poId}")
+    public ResponseEntity<List<DeliveryRecord>> getDeliveriesByPO(@PathVariable Long poId) {
+        List<DeliveryRecord> deliveries = deliveryRecordService.getDeliveriesByPO(poId);
+        return ResponseEntity.ok(deliveries);
     }
 }

@@ -2,37 +2,34 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.service.DelayScoreService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/delay-scores")
 public class DelayScoreController {
 
-    private final DelayScoreService service;
-
-    public DelayScoreController(DelayScoreService service) {
-        this.service = service;
-    }
+    @Autowired
+    private DelayScoreService delayScoreService;
 
     @PostMapping("/compute/{poId}")
-    public DelayScoreRecord compute(@PathVariable Long poId) {
-        return service.computeDelayScore(poId);
-    }
-
-    @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> bySupplier(
-            @PathVariable Long supplierId
-    ) {
-        return service.getScoresBySupplier(supplierId);
+    public ResponseEntity<DelayScoreRecord> computeScore(@PathVariable Long poId) {
+        DelayScoreRecord score = delayScoreService.computeDelayScore(poId);
+        return ResponseEntity.ok(score);
     }
 
     @GetMapping
-    public List<DelayScoreRecord> getAll() {
-        return service.getAllScores();
+    public ResponseEntity<List<DelayScoreRecord>> getAllScores() {
+        List<DelayScoreRecord> scores = delayScoreService.getAllScores();
+        return ResponseEntity.ok(scores);
+    }
+
+    @GetMapping("/supplier/{supplierId}")
+    public ResponseEntity<List<DelayScoreRecord>> getScoresBySupplier(@PathVariable Long supplierId) {
+        List<DelayScoreRecord> scores = delayScoreService.getScoresBySupplier(supplierId);
+        return ResponseEntity.ok(scores);
     }
 }
