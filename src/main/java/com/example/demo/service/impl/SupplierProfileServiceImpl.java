@@ -9,41 +9,41 @@ import java.util.*;
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private static final Map<Long, SupplierProfile> store = new HashMap<>();
-    private static long seq = 1;
+    private final SupplierProfileRepository repo;
 
-    @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        supplier.setId(seq++);
-        store.put(supplier.getId(), supplier);
-        return supplier;
+    public SupplierProfileServiceImpl(SupplierProfileRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
-        SupplierProfile supplier = store.get(id);
-        if (supplier == null) {
-            throw new RuntimeException("Supplier not found");
-        }
-        return supplier;
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
     @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return supplier;
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        if (supplier.getActive() == null) {
+            supplier.setActive(true); // default
+        }
+        return repo.save(supplier);
     }
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
-        return new ArrayList<>(store.values());
+        return repo.findAll();
+    }
+
+    @Override
+    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
+        SupplierProfile supplier = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        supplier.setActive(active);
+        return repo.save(supplier);
     }
 
     @Override
     public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return store.values().stream()
-                .filter(s -> code.equals(s.getSupplierCode()))
-                .findFirst();
+        return repo.findBySupplierCode(code);
     }
 }

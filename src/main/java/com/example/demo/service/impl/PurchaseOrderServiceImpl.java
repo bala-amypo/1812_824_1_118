@@ -14,49 +14,41 @@ import java.util.*;
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
-    private static final Map<Long, PurchaseOrderRecord> store = new HashMap<>();
-    private static long seq = 1;
+    private final PurchaseOrderRecordRepository poRepo;
+    private final SupplierProfileRepository supplierRepo;
 
-    @Autowired
-    private SupplierProfileService supplierService;
+    public PurchaseOrderServiceImpl(
+            PurchaseOrderRecordRepository poRepo,
+            SupplierProfileRepository supplierRepo) {
+        this.poRepo = poRepo;
+        this.supplierRepo = supplierRepo;
+    }
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
 
-        SupplierProfile supplier =
-                supplierService.getSupplierById(po.getSupplierId());
+        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
+                .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
 
-        if (supplier == null) {
-            throw new BadRequestException("Invalid supplierId");
+        if (!Boolean.TRUE.equals(supplier.getActive())) {
+            throw new BadRequestException("Supplier must be active");
         }
 
-        if (!supplier.getActive()) {
-            po.setStatus("BLOCKED");
-        } else {
-            po.setStatus("CREATED");
-        }
-
-        po.setId(seq++);
-        po.setIssuedDate(LocalDate.now());
-
-        store.put(po.getId(), po);
-        return po;
-    }
-
-    @Override
-    public Optional<PurchaseOrderRecord> getPOById(Long id) {
-        return Optional.ofNullable(store.get(id));
+        return poRepo.save(po);
     }
 
     @Override
     public List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId) {
-        return store.values().stream()
-                .filter(po -> supplierId.equals(po.getSupplierId()))
-                .toList();
+        return poRepo.findBySupplierId(supplierId);
+    }
+
+    @Override
+    public Optional<PurchaseOrderRecord> getPOById(Long id) {
+        return poRepo.findById(id);
     }
 
     @Override
     public List<PurchaseOrderRecord> getAllPurchaseOrders() {
-        return new ArrayList<>(store.values());
+        return poRepo.findAll();
     }
 }

@@ -12,46 +12,36 @@ import java.util.stream.Collectors;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private static final Map<Long, DeliveryRecord> store = new HashMap<>();
-    private static long seq = 1;
+    private final DeliveryRecordRepository deliveryRepo;
+    private final PurchaseOrderRecordRepository poRepo;
 
-    @Autowired
-    private PurchaseOrderService poService;
+    public DeliveryRecordServiceImpl(
+            DeliveryRecordRepository deliveryRepo,
+            PurchaseOrderRecordRepository poRepo) {
+        this.deliveryRepo = deliveryRepo;
+        this.poRepo = poRepo;
+    }
 
     @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord record) {
+    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
 
-        if (record.getDeliveredQuantity() <= 0) {
-            throw new RuntimeException("Invalid delivery quantity");
+        PurchaseOrderRecord po = poRepo.findById(delivery.getPoId())
+                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
+
+        if (delivery.getDeliveredQuantity() < 0) {
+            throw new BadRequestException("Delivered quantity must be >=");
         }
 
-        if (poService.getPOById(record.getPoId()).isEmpty()) {
-            throw new RuntimeException("Purchase order not found");
-        }
-
-        record.setId(seq++);
-        store.put(record.getId(), record);
-        return record;
+        return deliveryRepo.save(delivery);
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return store.values().stream()
-                .filter(d -> poId.equals(d.getPoId()))
-                .collect(Collectors.toList());
+        return deliveryRepo.findByPoId(poId);
     }
 
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
-        return new ArrayList<>(store.values());
-    }
-
-    @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        DeliveryRecord record = store.get(id);
-        if (record == null) {
-            throw new RuntimeException("Delivery not found");
-        }
-        return record;
+        return deliveryRepo.findAll();
     }
 }
