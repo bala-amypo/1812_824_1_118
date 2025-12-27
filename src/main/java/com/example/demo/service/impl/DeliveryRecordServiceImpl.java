@@ -20,12 +20,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord record) {
-        if (record == null || record.getQuantity() <= 0) {
+
+        if (record.getDeliveredQuantity() <= 0) {
             throw new RuntimeException("Invalid delivery quantity");
         }
 
-        // validate PO exists
-        if (poService.getPOById(record.getPurchaseOrderId()).isEmpty()) {
+        if (poService.getPOById(record.getPoId()).isEmpty()) {
             throw new RuntimeException("Purchase order not found");
         }
 
@@ -37,7 +37,7 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
         return store.values().stream()
-                .filter(d -> poId.equals(d.getPurchaseOrderId()))
+                .filter(d -> poId.equals(d.getPoId()))
                 .collect(Collectors.toList());
     }
 
