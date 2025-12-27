@@ -5,6 +5,7 @@ import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.PurchaseOrderService;
 import com.example.demo.service.SupplierProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,11 +17,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private static final Map<Long, PurchaseOrderRecord> store = new HashMap<>();
     private static long seq = 1;
 
-    private final SupplierProfileService supplierService;
-
-    public PurchaseOrderServiceImpl(SupplierProfileService supplierService) {
-        this.supplierService = supplierService;
-    }
+    @Autowired
+    private SupplierProfileService supplierService;
 
     @Override
     public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
@@ -28,14 +26,19 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         SupplierProfile supplier =
                 supplierService.getSupplierById(po.getSupplierId());
 
-        if (!"ACTIVE".equalsIgnoreCase(supplier.getActive())) {
-            po.setActive("REJECTED");
+        if (supplier == null) {
+            throw new BadRequestException("Invalid supplierId");
+        }
+
+        if (!supplier.getActive()) {
+            po.setStatus("BLOCKED");
         } else {
-            po.setActive("CREATED");
+            po.setStatus("CREATED");
         }
 
         po.setId(seq++);
         po.setIssuedDate(LocalDate.now());
+
         store.put(po.getId(), po);
         return po;
     }
