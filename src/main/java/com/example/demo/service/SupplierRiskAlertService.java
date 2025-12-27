@@ -1,7 +1,3 @@
-package com.example.demo.service;
-
-import com.example.demo.model.SupplierRiskAlert;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +11,12 @@ public interface SupplierRiskAlertService {
 
     SupplierRiskAlert resolveAlert(Long id);
 
-    Optional<SupplierRiskAlert> getAlertById(Long id);   // 👈 RETURN TYPE
+    Optional<SupplierRiskAlert> getAlertById(Long id);
+
+    // ✅ ADD THIS
+    SupplierRiskAlert createAlertForSupplier(
+            Long supplierId,
+            String alertLevel,
+            String message
+    );
 }

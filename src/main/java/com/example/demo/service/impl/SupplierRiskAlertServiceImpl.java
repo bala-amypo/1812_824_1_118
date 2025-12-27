@@ -7,6 +7,8 @@ import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
@@ -41,9 +43,24 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         return repository.save(alert);
     }
 
-    // ✅ FIXED METHOD — MATCHES INTERFACE
     @Override
     public Optional<SupplierRiskAlert> getAlertById(Long id) {
         return repository.findById(id);
+    }
+
+    // ✅ REQUIRED BY DelayScoreServiceImpl
+    @Override
+    public SupplierRiskAlert createAlertForSupplier(
+            Long supplierId,
+            String alertLevel,
+            String message) {
+
+        SupplierRiskAlert alert = new SupplierRiskAlert();
+        alert.setSupplierId(supplierId);
+        alert.setAlertLevel(alertLevel);
+        alert.setMessage(message);
+        alert.setResolved(false);
+
+        return repository.save(alert);
     }
 }
