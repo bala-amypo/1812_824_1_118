@@ -29,9 +29,10 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
         PurchaseOrderRecord po = poRepo.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-        if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >=");
-        }
+        if (delivery.getDeliveredQuantity() == null || delivery.getDeliveredQuantity() < 0) {
+    throw new BadRequestException("Delivered quantity must be >=");
+}
+
 
         return deliveryRepo.save(delivery);
     }

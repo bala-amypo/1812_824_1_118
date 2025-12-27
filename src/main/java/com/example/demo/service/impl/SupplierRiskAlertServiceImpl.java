@@ -18,10 +18,13 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        // 🔴 TEST EXPECTS DEFAULT FALSE
         if (alert.getResolved() == null) {
-            alert.setResolved(false);
-        }
+    alert.setResolved(false);
+}
+if (alert.getAlertLevel() == null) {
+    alert.setAlertLevel("LOW");
+}
+
         return repo.save(alert);
     }
 
