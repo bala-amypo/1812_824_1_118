@@ -54,4 +54,10 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
         a.setResolved(true);
         return a;
     }
+    
+    @Override
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return new ArrayList<>(store.values());
+    }
+
 }

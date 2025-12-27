@@ -2,12 +2,12 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DeliveryRecord;
-import com.example.demo.repository.DeliveryRecordRepository;
-import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.DeliveryRecordService;
+import com.example.demo.service.PurchaseOrderService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -15,14 +15,21 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     private static final Map<Long, DeliveryRecord> store = new HashMap<>();
     private static long seq = 1;
 
-    @Autowired
-    private PurchaseOrderService poService;
+    private final PurchaseOrderService poService;
+
+    public DeliveryRecordServiceImpl(PurchaseOrderService poService) {
+        this.poService = poService;
+    }
 
     @Override
     public DeliveryRecord recordDelivery(DeliveryRecord record) {
+        Optional<PurchaseOrderRecord> po = poService.getPOById(record.getPoId());
+        if (po.isEmpty()) {
+            throw new BadRequestException("Invalid PO id");
+        }
 
-        if (poService.getPOById(record.getPurchaseOrderId()).isEmpty()) {
-            return null;
+        if (record.getDeliveredQuantity() < 0) {
+            throw new BadRequestException("Delivered quantity must be >= 0");
         }
 
         record.setId(seq++);
@@ -32,9 +39,18 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return store.values().stream()
-                .filter(d -> poId.equals(d.getPurchaseOrderId()))
-                .toList();
+        List<DeliveryRecord> list = new ArrayList<>();
+        for (DeliveryRecord d : store.values()) {
+            if (poId.equals(d.getPoId())) {
+                list.add(d);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<DeliveryRecord> getAllDeliveries() {
+        return new ArrayList<>(store.values());
     }
 
     @Override
