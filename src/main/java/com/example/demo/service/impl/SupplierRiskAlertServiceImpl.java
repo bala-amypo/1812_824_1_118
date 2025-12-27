@@ -13,54 +13,45 @@ import java.util.Optional;
 @Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
-    private final SupplierRiskAlertRepository repository;
-
-    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository repository) {
-        this.repository = repository;
-    }
+    private static final Map<Long, SupplierRiskAlert> store = new HashMap<>();
+    private static long seq = 1;
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
+        alert.setId(seq++);
         alert.setResolved(false);
-        return repository.save(alert);
+        store.put(alert.getId(), alert);
+        return alert;
     }
 
     @Override
-    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
-        return repository.findBySupplierId(supplierId);
-    }
+    public SupplierRiskAlert createAlertForSupplier(
+            Long supplierId, String level, String message) {
 
-    @Override
-    public List<SupplierRiskAlert> getAllAlerts() {
-        return repository.findAll();
-    }
-
-    @Override
-    public SupplierRiskAlert resolveAlert(Long id) {
-        SupplierRiskAlert alert = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Alert not found"));
-        alert.setResolved(true);
-        return repository.save(alert);
+        SupplierRiskAlert alert = new SupplierRiskAlert();
+        alert.setSupplierId(supplierId);
+        alert.setAlertLevel(level);
+        alert.setMessage(message);
+        return createAlert(alert);
     }
 
     @Override
     public Optional<SupplierRiskAlert> getAlertById(Long id) {
-        return repository.findById(id);
+        return Optional.ofNullable(store.get(id));
     }
 
-    // ✅ REQUIRED BY DelayScoreServiceImpl
     @Override
-    public SupplierRiskAlert createAlertForSupplier(
-            Long supplierId,
-            String alertLevel,
-            String message) {
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        return store.values().stream()
+                .filter(a -> supplierId.equals(a.getSupplierId()))
+                .toList();
+    }
 
-        SupplierRiskAlert alert = new SupplierRiskAlert();
-        alert.setSupplierId(supplierId);
-        alert.setAlertLevel(alertLevel);
-        alert.setMessage(message);
-        alert.setResolved(false);
-
-        return repository.save(alert);
+    @Override
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert a = store.get(id);
+        if (a == null) return null;
+        a.setResolved(true);
+        return a;
     }
 }

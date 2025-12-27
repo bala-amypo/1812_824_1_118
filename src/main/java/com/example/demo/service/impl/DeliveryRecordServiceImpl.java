@@ -12,41 +12,33 @@ import java.util.List;
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
-    private final DeliveryRecordRepository deliveryRepository;
-    private final PurchaseOrderRecordRepository poRepository;
+    private static final Map<Long, DeliveryRecord> store = new HashMap<>();
+    private static long seq = 1;
 
-    public DeliveryRecordServiceImpl(DeliveryRecordRepository deliveryRepository,
-                                     PurchaseOrderRecordRepository poRepository) {
-        this.deliveryRepository = deliveryRepository;
-        this.poRepository = poRepository;
-    }
+    @Autowired
+    private PurchaseOrderService poService;
 
     @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
-        if (delivery.getDeliveredQuantity() < 0) {
-            throw new BadRequestException("Delivered quantity must be >=");
+    public DeliveryRecord recordDelivery(DeliveryRecord record) {
+
+        if (poService.getPOById(record.getPurchaseOrderId()).isEmpty()) {
+            return null;
         }
 
-        poRepository.findById(delivery.getPoId())
-                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
-
-        return deliveryRepository.save(delivery);
+        record.setId(seq++);
+        store.put(record.getId(), record);
+        return record;
     }
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
-        return deliveryRepository.findByPoId(poId);
+        return store.values().stream()
+                .filter(d -> poId.equals(d.getPurchaseOrderId()))
+                .toList();
     }
 
     @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepository.findAll();
-    }
-
-    // ✅ MISSING METHOD FIX
-    @Override
-    public DeliveryRecord getDeliveryById(Long id) {
-        return deliveryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Delivery not found"));
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 }
