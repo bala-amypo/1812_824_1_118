@@ -1,13 +1,15 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.DeliveryRecord;
+import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DeliveryRecordService;
-import com.example.demo.service.PurchaseOrderService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
@@ -43,5 +45,11 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     @Override
     public List<DeliveryRecord> getAllDeliveries() {
         return deliveryRepo.findAll();
+    }
+
+    // 🔴 REQUIRED BY INTERFACE
+    @Override
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepo.findById(id);
     }
 }

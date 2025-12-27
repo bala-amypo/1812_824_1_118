@@ -1,10 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -24,7 +26,7 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
         if (supplier.getActive() == null) {
-            supplier.setActive(true); // default
+            supplier.setActive(true);
         }
         return repo.save(supplier);
     }
