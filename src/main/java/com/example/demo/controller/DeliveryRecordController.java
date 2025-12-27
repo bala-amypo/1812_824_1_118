@@ -2,12 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -21,18 +17,18 @@ public class DeliveryRecordController {
     }
 
     @PostMapping
-    public DeliveryRecord record(@RequestBody DeliveryRecord delivery) {
-        return service.recordDelivery(delivery);
+    public DeliveryRecord recordDelivery(@RequestBody DeliveryRecord record) {
+        return service.recordDelivery(record);
+    }
+
+    @GetMapping("/{id}")
+    public DeliveryRecord getById(@PathVariable Long id) {
+        return service.getDeliveryById(id); // ✅ NO orElse here
     }
 
     @GetMapping("/po/{poId}")
     public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
         return service.getDeliveriesByPO(poId);
-    }
-
-    @GetMapping("/{id}")
-    public DeliveryRecord getById(@PathVariable Long id) {
-        return service.getDeliveryById(id).orElse(null);
     }
 
     @GetMapping
