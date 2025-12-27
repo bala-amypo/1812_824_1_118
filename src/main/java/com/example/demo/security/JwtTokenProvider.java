@@ -5,26 +5,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
-
-    private final String secret;
-    private final long validityInMs;
-
-    // REQUIRED BY TESTS
-    public JwtTokenProvider(String secret, long validityInMs) {
-        this.secret = secret;
-        this.validityInMs = validityInMs;
-    }
-
-    // DEFAULT CONSTRUCTOR FOR SPRING
-    public JwtTokenProvider() {
-        this("default-secret", 86400000);
-    }
-
+    
     public String generateToken(AppUser user) {
-        return "TOKEN_" + user.getUsername();
+        return "JWT_TOKEN_" + user.getUsername();
     }
-
+    
     public boolean validateToken(String token) {
-        return token != null && token.startsWith("TOKEN_");
+        return token != null && token.startsWith("JWT_TOKEN_");
     }
 }
