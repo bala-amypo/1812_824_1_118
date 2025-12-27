@@ -12,40 +12,39 @@ import java.util.Optional;
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private final SupplierProfileRepository repository;
-
-    public SupplierProfileServiceImpl(SupplierProfileRepository repository) {
-        this.repository = repository;
-    }
+    private static final Map<Long, SupplierProfile> store = new HashMap<>();
+    private static long seq = 1;
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
-        if (supplier == null) {
-            throw new BadRequestException("Supplier cannot be null");
-        }
-        return repository.save(supplier); // ✅ RETURN saved object
+        supplier.setId(seq++);
+        supplier.setActive(true);
+        store.put(supplier.getId(), supplier);
+        return supplier;
     }
 
     @Override
-    public SupplierProfile getSupplierById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
-    }
-
-    @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return repository.findAll();
+    public Optional<SupplierProfile> getSupplierById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return repository.save(supplier);
+        SupplierProfile s = store.get(id);
+        if (s == null) return null;
+        s.setActive(active);
+        return s;
+    }
+
+    @Override
+    public List<SupplierProfile> getAllSuppliers() {
+        return new ArrayList<>(store.values());
     }
 
     @Override
     public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return repository.findBySupplierCode(code);
+        return store.values().stream()
+                .filter(s -> code.equals(s.getSupplierCode()))
+                .findFirst();
     }
 }
