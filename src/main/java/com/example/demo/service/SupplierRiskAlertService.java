@@ -9,7 +9,8 @@ public interface SupplierRiskAlertService {
 
     List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
 
-    SupplierRiskAlert resolveAlert(Long id);
+    SupplierRiskAlert resolveAlert(Long alertId);
 
+    // ✅ Add this method so the implementation can override it
     List<SupplierRiskAlert> getAllAlerts();
 }
