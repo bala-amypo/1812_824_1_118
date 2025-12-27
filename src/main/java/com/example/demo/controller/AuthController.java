@@ -59,3 +59,4 @@ public class AuthController {
         return jwtTokenProvider.generateToken(user);
     }
 }
+    
