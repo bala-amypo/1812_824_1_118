@@ -1,48 +1,47 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
-    private final List<SupplierProfile> store = new ArrayList<>();
+    private final SupplierProfileRepository supplierProfileRepository;
+
+    public SupplierProfileServiceImpl(SupplierProfileRepository supplierProfileRepository) {
+        this.supplierProfileRepository = supplierProfileRepository;
+    }
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
-        store.add(supplier);
-        return supplier;
+        return supplierProfileRepository.save(supplier);
     }
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
         return supplierProfileRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Supplier not found"));
-    }
-
-
-    @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return store.stream()
-                .filter(s -> code.equals(s.getSupplierCode()))
-                .findFirst();
-    }
-
-    @Override
-    public List<SupplierProfile> getAllSuppliers() {
-        return store;
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id)
-                .orElseThrow(() -> new RuntimeException("Supplier not found"));
+        SupplierProfile supplier = getSupplierById(id);
         supplier.setActive(active);
-        return supplier;
+        return supplierProfileRepository.save(supplier);
+    }
+
+    @Override
+    public List<SupplierProfile> getAllSuppliers() {
+        return supplierProfileRepository.findAll();
+    }
+
+    @Override
+    public Optional<SupplierProfile> getBySupplierCode(String code) {
+        return supplierProfileRepository.findBySupplierCode(code);
     }
 }
