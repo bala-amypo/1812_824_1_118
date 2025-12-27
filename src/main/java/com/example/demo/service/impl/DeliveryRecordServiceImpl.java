@@ -15,30 +15,23 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     private final DeliveryRecordRepository deliveryRepository;
     private final PurchaseOrderRecordRepository poRepository;
 
-    public DeliveryRecordServiceImpl(
-            DeliveryRecordRepository deliveryRepository,
-            PurchaseOrderRecordRepository poRepository) {
+    public DeliveryRecordServiceImpl(DeliveryRecordRepository deliveryRepository,
+                                     PurchaseOrderRecordRepository poRepository) {
         this.deliveryRepository = deliveryRepository;
         this.poRepository = poRepository;
     }
 
     @Override
-    public DeliveryRecord recordDelivery(DeliveryRecord record) {
-
-        if (record.getDeliveredQuantity() == null || record.getDeliveredQuantity() < 0) {
+    public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
+        if (delivery.getDeliveredQuantity() < 0) {
             throw new BadRequestException("Delivered quantity must be >=");
         }
 
-        poRepository.findById(record.getPoId())
+        poRepository.findById(delivery.getPoId())
                 .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-        return deliveryRepository.save(record);
+        return deliveryRepository.save(delivery);
     }
-    @Override
-public DeliveryRecord getDeliveryById(Long id) {
-    return deliveryRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Delivery not found"));
-}
 
     @Override
     public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
