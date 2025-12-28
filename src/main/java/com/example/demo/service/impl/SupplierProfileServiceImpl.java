@@ -1,50 +1,46 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
-
-    private final Map<Long, SupplierProfile> store = new HashMap<>();
-    private final AtomicLong seq = new AtomicLong(1);
-
-    @Override
-    public SupplierProfile createSupplier(SupplierProfile supplier) {
-        supplier.setId(seq.getAndIncrement());
-        store.put(supplier.getId(), supplier);
-        return supplier;
-    }
+    
+    @Autowired
+    private SupplierProfileRepository supplierProfileRepository;
 
     @Override
     public SupplierProfile getSupplierById(Long id) {
-        SupplierProfile supplier = store.get(id);
-        if (supplier == null) {
-            throw new RuntimeException("Supplier not found");
-        }
-        return supplier;
+        return supplierProfileRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
     }
 
     @Override
-    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = getSupplierById(id);
-        supplier.setActive(active);
-        return supplier;
+    public SupplierProfile createSupplier(SupplierProfile supplier) {
+        return supplierProfileRepository.save(supplier);
     }
 
     @Override
     public List<SupplierProfile> getAllSuppliers() {
-        return new ArrayList<>(store.values());
+        return supplierProfileRepository.findAll();
     }
 
     @Override
-    public Optional<SupplierProfile> getBySupplierCode(String code) {
-        return store.values().stream()
-                .filter(s -> code.equals(s.getSupplierCode()))
-                .findFirst();
+    public SupplierProfile updateSupplierStatus(Long id, Boolean active) {
+        SupplierProfile supplier = getSupplierById(id);
+        supplier.setActive(active);
+        return supplierProfileRepository.save(supplier);
+    }
+
+    @Override
+    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
+        return supplierProfileRepository.findBySupplierCode(supplierCode);
     }
 }
