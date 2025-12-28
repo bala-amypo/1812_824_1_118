@@ -2,47 +2,52 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/suppliers")
+@CrossOrigin(origins = "*")
 public class SupplierProfileController {
 
-    @Autowired
-    private SupplierProfileService supplierProfileService;
+    private final SupplierProfileService supplierService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SupplierProfile> getSupplier(@PathVariable Long id) {
-        SupplierProfile supplier = supplierProfileService.getSupplierById(id);
-        return ResponseEntity.ok(supplier);
+    public SupplierProfileController(SupplierProfileService supplierService) {
+        this.supplierService = supplierService;
     }
 
+    // CREATE supplier
+    @PostMapping
+    public ResponseEntity<SupplierProfile> createSupplier(
+            @RequestBody SupplierProfile supplier) {
+
+        SupplierProfile created = supplierService.createSupplier(supplier);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    }
+
+    // GET all suppliers
     @GetMapping
     public ResponseEntity<List<SupplierProfile>> getAllSuppliers() {
-        List<SupplierProfile> suppliers = supplierProfileService.getAllSuppliers();
-        return ResponseEntity.ok(suppliers);
+        return ResponseEntity.ok(supplierService.getAllSuppliers());
     }
 
-    @PostMapping
-    public ResponseEntity<SupplierProfile> createSupplier(@RequestBody SupplierProfile supplier) {
-        SupplierProfile created = supplierProfileService.createSupplier(supplier);
-        return ResponseEntity.ok(created);
+    // GET supplier by id
+    @GetMapping("/{id}")
+    public ResponseEntity<SupplierProfile> getSupplierById(@PathVariable Long id) {
+        return ResponseEntity.ok(supplierService.getSupplierById(id));
     }
 
+    // UPDATE active status
     @PutMapping("/{id}/status")
-    public ResponseEntity<SupplierProfile> updateStatus(@PathVariable Long id, @RequestParam Boolean active) {
-        SupplierProfile updated = supplierProfileService.updateSupplierStatus(id, active);
-        return ResponseEntity.ok(updated);
-    }
+    public ResponseEntity<SupplierProfile> updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
 
-    @GetMapping("/code/{code}")
-    public ResponseEntity<SupplierProfile> getByCode(@PathVariable String code) {
-        Optional<SupplierProfile> supplier = supplierProfileService.getBySupplierCode(code);
-        return supplier.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(
+                supplierService.updateSupplierStatus(id, active)
+        );
     }
 }
