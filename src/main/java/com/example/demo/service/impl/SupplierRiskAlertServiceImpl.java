@@ -20,7 +20,6 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert createAlert(SupplierRiskAlert alert) {
-        // Fixes testAlertCreationDefaultResolvedFalse
         if (alert.getResolved() == null) {
             alert.setResolved(false);
         }
@@ -34,24 +33,26 @@ public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     @Override
     public SupplierRiskAlert resolveAlert(Long alertId) {
-        // Fixes testResolveAlertChangesFlag
         SupplierRiskAlert alert = riskAlertRepository.findById(alertId)
                 .orElseThrow(() -> new BadRequestException("Alert not found"));
         alert.setResolved(true);
         return riskAlertRepository.save(alert);
     }
 
-    // MISSING LOGIC: Fixes testCriteriaAlertMediumRisk & testCriteriaLikeHighRiskSuppliers
+    @Override
     public List<SupplierRiskAlert> getAlertsByLevel(String level) {
         return riskAlertRepository.findAll().stream()
-                .filter(a -> a.getAlertLevel() != null && a.getAlertLevel().equalsIgnoreCase(level))
+                .filter(a ->
+                        a.getAlertLevel() != null &&
+                        a.getAlertLevel().toLowerCase().contains(level.toLowerCase())
+                )
                 .collect(Collectors.toList());
     }
 
-    // MISSING LOGIC: Fixes testCriteriaLikeUnresolvedAlerts
+    @Override
     public List<SupplierRiskAlert> getUnresolvedAlerts() {
         return riskAlertRepository.findAll().stream()
-                .filter(a -> Boolean.FALSE.equals(a.getResolved()))
+                .filter(a -> a.getResolved() == null || !a.getResolved())
                 .collect(Collectors.toList());
     }
 

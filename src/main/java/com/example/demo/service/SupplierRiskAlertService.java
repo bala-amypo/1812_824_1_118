@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.SupplierRiskAlert;
+
 import java.util.List;
 
 public interface SupplierRiskAlertService {
@@ -11,6 +12,10 @@ public interface SupplierRiskAlertService {
 
     SupplierRiskAlert resolveAlert(Long alertId);
 
-    // ✅ Add this method so the implementation can override it
     List<SupplierRiskAlert> getAllAlerts();
+
+    // ✅ ADD THESE (IMPORTANT FOR TESTS)
+    List<SupplierRiskAlert> getAlertsByLevel(String level);
+
+    List<SupplierRiskAlert> getUnresolvedAlerts();
 }
