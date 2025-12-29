@@ -17,25 +17,19 @@ public class DelayScoreController {
 
     @PostMapping("/compute/{poId}")
     public ResponseEntity<DelayScoreRecord> computeScore(@PathVariable Long poId) {
-
         DelayScoreRecord score = delayScoreService.computeDelayScore(poId);
-
         return ResponseEntity.ok(score);
     }
 
     @GetMapping
     public ResponseEntity<List<DelayScoreRecord>> getAllScores() {
-
         List<DelayScoreRecord> scores = delayScoreService.getAllScores();
-
         return ResponseEntity.ok(scores);
     }
 
     @GetMapping("/supplier/{supplierId}")
     public ResponseEntity<List<DelayScoreRecord>> getScoresBySupplier(@PathVariable Long supplierId) {
-
         List<DelayScoreRecord> scores = delayScoreService.getScoresBySupplier(supplierId);
-        
         return ResponseEntity.ok(scores);
     }
 }
