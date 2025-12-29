@@ -11,20 +11,16 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    // 🔐 Secret key (MIN 32 characters)
     private static final String SECRET_KEY =
             "mysecretkeymysecretkeymysecretkey123";
 
-    // ⏰ Token validity (1 day)
     private static final long EXPIRATION_TIME = 86400000;
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    // ✅ Generate JWT Token
     public String generateToken(AppUser user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                // IMPORTANT: ROLE_ prefix
                 .claim("role", "ROLE_" + user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
