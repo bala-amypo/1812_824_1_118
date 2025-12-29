@@ -14,7 +14,6 @@ public interface SupplierRiskAlertService {
 
     List<SupplierRiskAlert> getAllAlerts();
 
-    // ✅ ADD THESE (IMPORTANT FOR TESTS)
     List<SupplierRiskAlert> getAlertsByLevel(String level);
 
     List<SupplierRiskAlert> getUnresolvedAlerts();

@@ -28,7 +28,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ Validate JWT Token
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -41,7 +40,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // ✅ Get username from token
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -51,7 +49,6 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    // ✅ Get role from token
     public String getRoleFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
